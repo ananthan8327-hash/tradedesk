@@ -802,7 +802,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 </div>
 
 <script>
-const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/ gemini-2.0-flash:generateContent";
 
 async function callGemini(prompt, maxTokens=300) {
   const key = GEMINI_KEY || localStorage.getItem('gemini_api_key') || '';
