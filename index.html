@@ -3,183 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forex Journal — Ananth</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>TradeDesk — Ananth</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0b0d;
-  --surface:#111318;
-  --surface2:#181c23;
-  --border:#1e2330;
-  --border2:#252d3d;
-  --text:#e8eaf0;
-  --text2:#8b92a8;
-  --text3:#4a5168;
+  --bg:#070809;
+  --s1:#0d0f12;
+  --s2:#121518;
+  --s3:#181c22;
+  --b1:#1e2330;
+  --b2:#252d3d;
+  --t1:#e8eaf0;
+  --t2:#8b92a8;
+  --t3:#4a5168;
   --gold:#f0b429;
   --gold2:#ffd166;
   --green:#22c55e;
   --red:#ef4444;
   --blue:#3b82f6;
   --purple:#a855f7;
-  --accent:#f0b429;
 }
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh}
-.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
 
-/* Sidebar */
-.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px 0;display:flex;flex-direction:column;gap:4px}
-.logo{padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.logo-text{font-size:18px;font-weight:600;color:var(--gold);letter-spacing:-0.5px}
-.logo-sub{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;border-radius:0;color:var(--text2);font-size:13px;font-weight:500;transition:all 0.15s;border-left:2px solid transparent}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:var(--surface2);color:var(--gold);border-left-color:var(--gold)}
-.nav-icon{font-size:16px;width:20px;text-align:center}
-.nav-section{padding:16px 20px 6px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
-.sidebar-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
-.pair-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;border:1px solid var(--border2);color:var(--text2);margin:2px;cursor:pointer;transition:all 0.15s}
-.pair-pill:hover,.pair-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(240,180,41,0.08)}
-.dot{width:6px;height:6px;border-radius:50%}
-.dot-gold{background:var(--gold)}
-.dot-blue{background:var(--blue)}
-.dot-purple{background:var(--purple)}
+/* Layout */
+.app{display:grid;grid-template-columns:56px 1fr;min-height:100vh}
+.sidebar{background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:4px;position:fixed;left:0;top:0;bottom:0;width:56px;z-index:100}
+.main{margin-left:56px;overflow-y:auto;min-height:100vh}
 
-/* Main */
-.main{overflow-y:auto}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--border);background:var(--surface)}
-.page-title{font-size:16px;font-weight:600;color:var(--text)}
-.page-sub{font-size:12px;color:var(--text3);margin-top:1px}
-.btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:all 0.15s;font-family:'Inter',sans-serif}
-.btn:hover{border-color:var(--gold);color:var(--gold)}
-.btn-gold{background:var(--gold);color:#000;border-color:var(--gold)}
-.btn-gold:hover{background:var(--gold2);color:#000;border-color:var(--gold2)}
-.content{padding:24px 28px}
+/* Sidebar icons */
+.nav-btn{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3);font-size:18px;transition:all 0.15s;border:none;background:none;position:relative}
+.nav-btn:hover{background:var(--s3);color:var(--t2)}
+.nav-btn.active{background:var(--s3);color:var(--gold)}
+.nav-btn::after{content:attr(data-tip);position:absolute;left:52px;background:#1a1f2e;border:1px solid var(--b2);padding:4px 10px;border-radius:5px;font-size:11px;color:var(--t1);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.15s;font-family:'Inter',sans-serif}
+.nav-btn:hover::after{opacity:1}
+.logo{color:var(--gold);font-size:18px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--b1);width:40px;text-align:center}
+.nav-bottom{margin-top:auto}
+
+/* Pages */
+.page{display:none;padding:24px}
+.page.active{display:block}
+
+/* Topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.page-title{font-size:20px;font-weight:700;color:var(--t1)}
+.page-sub{font-size:12px;color:var(--t3);margin-top:2px}
 
 /* Cards */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
-.card-title{font-size:12px;font-weight:600;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:16px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
-.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
-.stat-label{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500}
-.stat-value{font-size:22px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.stat-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:18px}
+.card-title{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* Stat cards */
+.stat{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:14px 16px}
+.stat-label{font-size:11px;color:var(--t3);margin-bottom:6px;font-weight:500}
+.stat-val{font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.stat-sub{font-size:11px;color:var(--t3);margin-top:3px}
+.gold{color:var(--gold)}
 .green{color:var(--green)}
 .red{color:var(--red)}
-.gold{color:var(--gold)}
 .blue{color:var(--blue)}
 
-/* Market overview */
-.pair-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
-.pair-row:last-child{border-bottom:none}
-.pair-name{font-weight:600;font-size:13px;font-family:'JetBrains Mono',monospace}
-.pair-price{font-size:14px;font-weight:500;font-family:'JetBrains Mono',monospace}
-.pair-change{font-size:12px;font-weight:500;padding:2px 8px;border-radius:4px}
-.up{background:rgba(34,197,94,0.12);color:var(--green)}
-.down{background:rgba(239,68,68,0.12);color:var(--red)}
-.bias-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:0.5px}
-.bias-bull{background:rgba(34,197,94,0.12);color:var(--green)}
-.bias-bear{background:rgba(239,68,68,0.12);color:var(--red)}
-.bias-neu{background:rgba(139,146,168,0.12);color:var(--text2)}
+/* Buttons */
+.btn{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--t1);transition:all 0.15s;font-family:'Inter',sans-serif}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold{background:var(--gold);color:#000;border-color:var(--gold);font-weight:600}
+.btn-gold:hover{background:var(--gold2);color:#000}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+/* Forms */
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.form-label{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.7px}
+.form-input,.form-select{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:9px 12px;color:var(--t1);font-size:13px;width:100%;outline:none;transition:border 0.15s;font-family:'JetBrains Mono',monospace}
+.form-input:focus,.form-select:focus{border-color:var(--gold)}
+.form-select option{background:var(--s1)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* Checklist */
-.check-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:7px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all 0.15s}
-.check-item:hover{border-color:var(--border2);background:var(--surface2)}
-.check-item.checked{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05)}
-.check-box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;font-size:12px}
-.check-item.checked .check-box{background:var(--green);border-color:var(--green);color:#fff}
-.check-label{font-size:13px;font-weight:500;color:var(--text2)}
-.check-item.checked .check-label{color:var(--text)}
-.check-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.score-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-top:14px}
-.score-fill{height:100%;border-radius:3px;background:var(--green);transition:width 0.4s ease}
-.score-text{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3)}
+.check-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:7px;border:1px solid var(--b1);margin-bottom:8px;cursor:pointer;transition:all 0.15s}
+.check-item:hover{border-color:var(--b2);background:var(--s2)}
+.check-item.done{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.04)}
+.check-box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;font-size:11px}
+.check-item.done .check-box{background:var(--green);border-color:var(--green);color:#fff}
+.check-label{font-size:13px;font-weight:500;color:var(--t2)}
+.check-item.done .check-label{color:var(--t1)}
+.check-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.grade-bar{height:6px;border-radius:3px;background:var(--b1);overflow:hidden;margin-top:14px}
+.grade-fill{height:100%;border-radius:3px;background:var(--green);transition:width 0.4s}
 
-/* Trade form */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-group{display:flex;flex-direction:column;gap:5px}
-.form-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px}
-.form-input,.form-select{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'JetBrains Mono',monospace;width:100%;outline:none;transition:border 0.15s}
-.form-input:focus,.form-select:focus{border-color:var(--gold)}
-.form-select option{background:var(--surface)}
-.rr-display{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.rr-item{text-align:center}
-.rr-val{font-size:18px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--gold)}
-.rr-label{font-size:10px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-
-/* AI Analysis */
-.ai-box{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:16px;min-height:100px;position:relative}
-.ai-label{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.ai-text{font-size:13px;color:var(--text2);line-height:1.7}
-.ai-verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:10px}
-.verdict-a{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
-.verdict-b{background:rgba(240,180,41,0.15);color:var(--gold);border:1px solid rgba(240,180,41,0.3)}
-.verdict-skip{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
-.ai-loading{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:13px}
-.spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Journal table */
-.journal-table{width:100%;border-collapse:collapse}
-.journal-table th{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
-.journal-table td{padding:11px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)}
-.journal-table tr:hover td{background:var(--surface2)}
-.journal-table tr:last-child td{border-bottom:none}
-.tag{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace}
+/* Table */
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.7px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--b1)}
+.table td{padding:11px 12px;border-bottom:1px solid var(--b1);font-size:13px;color:var(--t2)}
+.table tr:hover td{background:var(--s2)}
+.table tr:last-child td{border-bottom:none}
+.tag{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace}
 .tag-win{background:rgba(34,197,94,0.12);color:var(--green)}
 .tag-loss{background:rgba(239,68,68,0.12);color:var(--red)}
 .tag-open{background:rgba(59,130,246,0.12);color:var(--blue)}
+.tag-be{background:rgba(139,146,168,0.12);color:var(--t2)}
+
+/* RR display */
+.rr-box{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.rr-item{text-align:center}
+.rr-val{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gold)}
+.rr-label{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* Session pills */
+.session-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--b2);color:var(--t3);margin:3px}
+.session-pill.active-session{border-color:var(--gold);color:var(--gold);background:rgba(240,180,41,0.08)}
 
 /* News */
-.news-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.news-item{padding:12px 0;border-bottom:1px solid var(--b1)}
 .news-item:last-child{border-bottom:none}
-.news-impact{display:inline-flex;width:8px;height:8px;border-radius:50%;margin-right:8px;flex-shrink:0;margin-top:4px}
-.impact-high{background:var(--red)}
-.impact-med{background:var(--gold)}
-.impact-low{background:var(--green)}
-.news-time{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
-.news-title{font-size:13px;color:var(--text);font-weight:500;margin-top:3px}
-.news-currency{font-size:11px;color:var(--text3);margin-top:2px}
+.impact-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0}
+.imp-high{background:var(--red)}
+.imp-med{background:var(--gold)}
+.imp-low{background:var(--green)}
 
-/* Tabs */
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px}
-.tab{padding:10px 20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text3);border-bottom:2px solid transparent;transition:all 0.15s;margin-bottom:-1px}
-.tab:hover{color:var(--text)}
-.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* Screenshot upload */
+.upload-area{border:2px dashed var(--b2);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative}
+.upload-area:hover{border-color:var(--gold);background:rgba(240,180,41,0.04)}
+.upload-preview{width:100%;border-radius:6px;margin-top:10px;max-height:200px;object-fit:cover;display:none}
 
-/* Backtest */
-.bt-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
-.bt-row:last-child{border-bottom:none}
-.bt-label{font-size:12px;color:var(--text3)}
-.bt-val{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
+/* Modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.modal-box{background:var(--s1);border:1px solid var(--b2);border-radius:12px;padding:28px;width:90%;max-width:420px}
 
-/* Responsive */
+/* Bias badge */
+.bias{display:inline-flex;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.bias-bull{background:rgba(34,197,94,0.12);color:var(--green)}
+.bias-bear{background:rgba(239,68,68,0.12);color:var(--red)}
+.bias-neu{background:rgba(139,146,168,0.12);color:var(--t2)}
+
+/* Bar chart */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-label{font-size:11px;color:var(--t3);width:70px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.bar-track{flex:1;height:8px;background:var(--b1);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width 0.5s}
+.bar-fill.g{background:var(--green)}
+.bar-fill.r{background:var(--red)}
+.bar-val{font-size:11px;color:var(--t2);width:36px;text-align:right;font-family:'JetBrains Mono',monospace}
+
+/* TradingView */
+.tv-container{border-radius:8px;overflow:hidden;border:1px solid var(--b1)}
+
+/* MYR Calculator */
+.myr-result{background:var(--s2);border:1px solid var(--gold);border-radius:8px;padding:14px;margin-top:14px;text-align:center}
+.myr-val{font-size:28px;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace}
+.myr-label{font-size:11px;color:var(--t3);margin-top:3px}
+
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .grid-4{grid-template-columns:1fr 1fr}
-  .grid-2{grid-template-columns:1fr}
+  .sidebar{width:100%;height:56px;flex-direction:row;bottom:0;top:auto;padding:0 8px;border-right:none;border-top:1px solid var(--b1)}
+  .main{margin-left:0;margin-bottom:56px}
+  .grid4,.grid3{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
   .form-grid{grid-template-columns:1fr}
+  .nav-btn::after{display:none}
 }
-
-/* Page sections */
-.page{display:none}
-.page.active{display:block}
-
-/* Bar chart simple */
-.mini-bar{display:flex;flex-direction:column;gap:6px}
-.bar-row{display:flex;align-items:center;gap:10px}
-.bar-label{font-size:11px;color:var(--text3);width:80px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
-.bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width 0.6s ease}
-.bar-fill.green{background:var(--green)}
-.bar-fill.red{background:var(--red)}
-.bar-val{font-size:11px;color:var(--text2);width:40px;text-align:right;font-family:'JetBrains Mono',monospace}
 </style>
 </head>
 <body>
@@ -187,278 +172,163 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 
 <!-- Sidebar -->
 <aside class="sidebar">
-  <div class="logo">
-    <div class="logo-text">⚡ TradeDesk</div>
-    <div class="logo-sub">v1.0 — Ananth's Journal</div>
-  </div>
-  <div class="nav-item active" onclick="showPage('dashboard')">
-    <span class="nav-icon">◈</span> Dashboard
-  </div>
-  <div class="nav-item" onclick="showPage('checklist')">
-    <span class="nav-icon">✓</span> Pre-Trade Check
-  </div>
-  <div class="nav-item" onclick="showPage('trade')">
-    <span class="nav-icon">+</span> New Trade
-  </div>
-  <div class="nav-item" onclick="showPage('journal')">
-    <span class="nav-icon">≡</span> Journal
-  </div>
-  <div class="nav-item" onclick="showPage('backtest')">
-    <span class="nav-icon">◷</span> Backtest
-  </div>
-  <div class="nav-item" onclick="showPage('analytics')">
-    <span class="nav-icon">▲</span> Analytics
-  </div>
-  <div class="nav-item" onclick="showPage('news')">
-    <span class="nav-icon">◉</span> News
-  </div>
-  <div class="sidebar-bottom">
-    <div style="font-size:11px;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.7px;font-weight:600">Watching</div>
-    <div>
-      <span class="pair-pill active"><span class="dot dot-gold"></span>XAUUSD</span>
-      <span class="pair-pill"><span class="dot dot-blue"></span>EURUSD</span>
-      <span class="pair-pill"><span class="dot dot-purple"></span>GBPUSD</span>
-      <span class="pair-pill">DXY</span>
-    </div>
+  <div class="logo">⚡</div>
+  <button class="nav-btn active" onclick="go('dashboard')" data-tip="Dashboard">◈</button>
+  <button class="nav-btn" onclick="go('market')" data-tip="Market & DXY">📊</button>
+  <button class="nav-btn" onclick="go('checklist')" data-tip="Pre-Trade Check">✓</button>
+  <button class="nav-btn" onclick="go('trade')" data-tip="New Trade">+</button>
+  <button class="nav-btn" onclick="go('journal')" data-tip="Journal">≡</button>
+  <button class="nav-btn" onclick="go('backtest')" data-tip="Backtest">◷</button>
+  <button class="nav-btn" onclick="go('analytics')" data-tip="Analytics">▲</button>
+  <button class="nav-btn" onclick="go('news')" data-tip="News">◉</button>
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="go('calc')" data-tip="MYR Calculator">RM</button>
   </div>
 </aside>
 
-<!-- Main Content -->
+<!-- Main -->
 <main class="main">
 
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="topbar">
     <div>
-      <div class="page-title">Dashboard</div>
-      <div class="page-sub" id="live-date">Loading...</div>
+      <div class="page-title">TradeDesk</div>
+      <div class="page-sub" id="dash-date">Loading...</div>
     </div>
-    <button class="btn btn-gold" onclick="showPage('trade')">+ New Trade</button>
-    <button class="btn" onclick="openSettings()" style="margin-left:8px">⚙ API Key</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div id="session-now" style="font-size:12px;color:var(--t3)"></div>
+      <button class="btn btn-gold btn-sm" onclick="go('trade')">+ New Trade</button>
+    </div>
   </div>
-  <div class="content">
 
-    <!-- Stats -->
-    <div class="grid-4">
-      <div class="stat-card">
-        <div class="stat-label">Total Trades</div>
-        <div class="stat-value gold" id="stat-total">0</div>
-        <div class="stat-sub">This month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Win Rate</div>
-        <div class="stat-value green" id="stat-winrate">0%</div>
-        <div class="stat-sub">W/L ratio</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Pips</div>
-        <div class="stat-value" id="stat-pips">0</div>
-        <div class="stat-sub">Net pip gain</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Best Pair</div>
-        <div class="stat-value gold" id="stat-best">—</div>
-        <div class="stat-sub">By win rate</div>
-      </div>
+  <div class="grid4" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Total Trades</div><div class="stat-val gold" id="d-total">0</div><div class="stat-sub">This month</div></div>
+    <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-val green" id="d-wr">0%</div><div class="stat-sub">W/L ratio</div></div>
+    <div class="stat"><div class="stat-label">Net Pips</div><div class="stat-val" id="d-pips">0</div><div class="stat-sub">Total</div></div>
+    <div class="stat"><div class="stat-label">Net MYR</div><div class="stat-val gold" id="d-myr">RM 0</div><div class="stat-sub">Estimated</div></div>
+  </div>
+
+  <!-- Session Times -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Sessions (Malaysia Time)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px" id="session-pills">
+      <span class="session-pill" id="s-asian">🌏 Asian 3AM–10AM</span>
+      <span class="session-pill" id="s-london">🇬🇧 London 3PM–7PM</span>
+      <span class="session-pill" id="s-ny">🇺🇸 NY 8PM–12AM</span>
+      <span class="session-pill" id="s-overlap">⭐ Overlap 8PM–11PM</span>
     </div>
+  </div>
 
-    <div class="grid-2">
-      <!-- Market Overview -->
-      <div class="card">
-        <div class="card-title">Market Overview</div>
-        <div id="market-data">
-          <div class="pair-row">
-            <div>
-              <div class="pair-name">DXY</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:2px">USD Index</div>
-            </div>
-            <div style="text-align:right">
-              <div class="pair-price" id="dxy-price">Loading...</div>
-              <div id="dxy-bias" class="bias-badge bias-neu" style="margin-top:4px;display:inline-block">—</div>
-            </div>
-          </div>
-          <div class="pair-row">
-            <div>
-              <div class="pair-name">XAUUSD</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:2px">Gold / USD</div>
-            </div>
-            <div style="text-align:right">
-              <div class="pair-price" id="xau-price">Loading...</div>
-              <div id="xau-bias" class="bias-badge bias-neu" style="margin-top:4px;display:inline-block">—</div>
-            </div>
-          </div>
-          <div class="pair-row">
-            <div>
-              <div class="pair-name">EURUSD</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:2px">Euro / USD</div>
-            </div>
-            <div style="text-align:right">
-              <div class="pair-price" id="eur-price">Loading...</div>
-              <div id="eur-bias" class="bias-badge bias-neu" style="margin-top:4px;display:inline-block">—</div>
-            </div>
-          </div>
-          <div class="pair-row">
-            <div>
-              <div class="pair-name">GBPUSD</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:2px">GBP / USD</div>
-            </div>
-            <div style="text-align:right">
-              <div class="pair-price" id="gbp-price">Loading...</div>
-              <div id="gbp-bias" class="bias-badge bias-neu" style="margin-top:4px;display:inline-block">—</div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">DXY Impact Analysis</div>
-          <div id="dxy-analysis" style="font-size:12px;color:var(--text2);line-height:1.6">Loading market analysis...</div>
-        </div>
-      </div>
-
-      <!-- Today's Plan -->
-      <div class="card">
-        <div class="card-title">Today's Brief</div>
-        <div id="daily-brief" style="font-size:13px;color:var(--text2);line-height:1.8">
-          <div class="ai-loading"><div class="spinner"></div> Generating daily brief...</div>
-        </div>
-        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-          <div class="card-title">Session Times (MY)</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:var(--text3)">London Open</span>
-              <span style="font-family:'JetBrains Mono',monospace;color:var(--gold)">3:00 PM — 7:00 PM</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:var(--text3)">NY Open</span>
-              <span style="font-family:'JetBrains Mono',monospace;color:var(--text2)">8:00 PM — 12:00 AM</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:var(--text3)">London/NY Overlap</span>
-              <span style="font-family:'JetBrains Mono',monospace;color:var(--green)">8:00 PM — 11:00 PM ★</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:var(--text3)">Asian Session</span>
-              <span style="font-family:'JetBrains Mono',monospace;color:var(--text3)">3:00 AM — 10:00 AM</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Recent Trades -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="card-title" style="margin-bottom:0">Recent Trades</div>
+      <button class="btn btn-sm" onclick="go('journal')">View All</button>
     </div>
-
-    <!-- Recent Trades -->
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div class="card-title" style="margin-bottom:0">Recent Trades</div>
-        <button class="btn" onclick="showPage('journal')" style="font-size:12px;padding:5px 12px">View All</button>
-      </div>
-      <div id="recent-trades-container">
-        <div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">No trades yet. <span style="color:var(--gold);cursor:pointer" onclick="showPage('trade')">Add your first trade →</span></div>
-      </div>
-    </div>
-
+    <div id="d-recent"><div style="text-align:center;padding:24px;color:var(--t3)">No trades yet. <span style="color:var(--gold);cursor:pointer" onclick="go('trade')">Add first trade →</span></div></div>
   </div>
 </div>
 
-<!-- PRE-TRADE CHECKLIST -->
+<!-- MARKET -->
+<div id="page-market" class="page">
+  <div class="topbar">
+    <div><div class="page-title">Market Overview</div><div class="page-sub">DXY + Pairs Live</div></div>
+  </div>
+
+  <!-- DXY -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">DXY — USD Index</div>
+    <div class="tv-container">
+      <iframe src="https://s.tradingview.com/widgetsnext/embed/mini-chart/#symbol=TVC%3ADXY&interval=D&chartType=line&trendLineColor=%23f0b429&underLineColor=%23f0b42920&fontColor=%238b92a8&locale=en&colorTheme=dark&width=100%&height=220" style="width:100%;height:220px;border:none" allowtransparency="true" scrolling="no"></iframe>
+    </div>
+    <div style="margin-top:12px;padding:10px;background:var(--s2);border-radius:6px;font-size:12px;color:var(--t2)" id="dxy-msg">
+      DXY UP → USD Strong → EURUSD/GBPUSD bearish, XAUUSD bearish<br>
+      DXY DOWN → USD Weak → EURUSD/GBPUSD bullish, XAUUSD bullish
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-bottom:16px">
+    <!-- XAUUSD -->
+    <div class="card">
+      <div class="card-title">XAUUSD — Gold</div>
+      <div class="tv-container">
+        <iframe src="https://s.tradingview.com/widgetsnext/embed/mini-chart/#symbol=OANDA%3AXAUUSD&interval=60&chartType=candlesticks&trendLineColor=%23f0b429&fontColor=%238b92a8&locale=en&colorTheme=dark&width=100%&height=180" style="width:100%;height:180px;border:none" allowtransparency="true" scrolling="no"></iframe>
+      </div>
+    </div>
+    <!-- EURUSD -->
+    <div class="card">
+      <div class="card-title">EURUSD</div>
+      <div class="tv-container">
+        <iframe src="https://s.tradingview.com/widgetsnext/embed/mini-chart/#symbol=OANDA%3AEURUSD&interval=60&chartType=candlesticks&trendLineColor=%233b82f6&fontColor=%238b92a8&locale=en&colorTheme=dark&width=100%&height=180" style="width:100%;height:180px;border:none" allowtransparency="true" scrolling="no"></iframe>
+      </div>
+    </div>
+    <!-- GBPUSD -->
+    <div class="card">
+      <div class="card-title">GBPUSD</div>
+      <div class="tv-container">
+        <iframe src="https://s.tradingview.com/widgetsnext/embed/mini-chart/#symbol=OANDA%3AGBPUSD&interval=60&chartType=candlesticks&trendLineColor=%23a855f7&fontColor=%238b92a8&locale=en&colorTheme=dark&width=100%&height=180" style="width:100%;height:180px;border:none" allowtransparency="true" scrolling="no"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Chart -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="card-title" style="margin-bottom:0">Full Chart</div>
+      <select class="form-select" style="width:150px;font-size:12px" id="chart-symbol" onchange="updateChart()">
+        <option value="OANDA:XAUUSD">XAUUSD Gold</option>
+        <option value="OANDA:EURUSD">EURUSD</option>
+        <option value="OANDA:GBPUSD">GBPUSD</option>
+        <option value="TVC:DXY">DXY</option>
+      </select>
+    </div>
+    <div class="tv-container">
+      <div id="tv-chart"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
 <div id="page-checklist" class="page">
   <div class="topbar">
-    <div>
-      <div class="page-title">Pre-Trade Checklist</div>
-      <div class="page-sub">Complete all before entering</div>
-    </div>
-    <button class="btn" onclick="resetChecklist()">Reset</button>
+    <div><div class="page-title">Pre-Trade Checklist</div><div class="page-sub">Complete all before entry</div></div>
+    <button class="btn btn-sm" onclick="resetChecks()">Reset</button>
   </div>
-  <div class="content">
-    <div class="grid-2">
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-title">HTF Analysis</div>
-
-          <div class="check-item" id="chk-0" onclick="toggleCheck(0)">
-            <div class="check-box" id="chk-box-0"></div>
-            <div>
-              <div class="check-label">DXY direction confirmed</div>
-              <div class="check-sub">USD strong or weak — all pairs align?</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-1" onclick="toggleCheck(1)">
-            <div class="check-box" id="chk-box-1"></div>
-            <div>
-              <div class="check-label">Market structure identified</div>
-              <div class="check-sub">HH/HL for bull, LH/LL for bear</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-2" onclick="toggleCheck(2)">
-            <div class="check-box" id="chk-box-2"></div>
-            <div>
-              <div class="check-label">Daily bias confirmed</div>
-              <div class="check-sub">Previous day close direction matches</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Entry Confirmation</div>
-          <div class="check-item" id="chk-3" onclick="toggleCheck(3)">
-            <div class="check-box" id="chk-box-3"></div>
-            <div>
-              <div class="check-label">1H structure aligns</div>
-              <div class="check-sub">1H confirms daily bias direction</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-4" onclick="toggleCheck(4)">
-            <div class="check-box" id="chk-box-4"></div>
-            <div>
-              <div class="check-label">5M setup ready</div>
-              <div class="check-sub">C1 Bearish → C2 Sweep → C3 Bullish</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-5" onclick="toggleCheck(5)">
-            <div class="check-box" id="chk-box-5"></div>
-            <div>
-              <div class="check-label">Imbalance / OB present</div>
-              <div class="check-sub">Price near key level for entry</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-6" onclick="toggleCheck(6)">
-            <div class="check-box" id="chk-box-6"></div>
-            <div>
-              <div class="check-label">No high-impact news in 30min</div>
-              <div class="check-sub">Check ForexFactory before entry</div>
-            </div>
-          </div>
-          <div class="check-item" id="chk-7" onclick="toggleCheck(7)">
-            <div class="check-box" id="chk-box-7"></div>
-            <div>
-              <div class="check-label">R:R minimum 1:2</div>
-              <div class="check-sub">Risk is worth the reward</div>
-            </div>
-          </div>
-
-          <div class="score-bar">
-            <div class="score-fill" id="score-fill" style="width:0%"></div>
-          </div>
-          <div class="score-text">
-            <span id="score-label">0 / 8 checks</span>
-            <span id="score-grade" style="font-weight:600">—</span>
-          </div>
+  <div class="grid2">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">HTF Analysis</div>
+        <div class="check-item" id="c0" onclick="tick(0)"><div class="check-box" id="cb0"></div><div><div class="check-label">DXY direction confirmed</div><div class="check-sub">USD strong or weak?</div></div></div>
+        <div class="check-item" id="c1" onclick="tick(1)"><div class="check-box" id="cb1"></div><div><div class="check-label">Market structure identified</div><div class="check-sub">HH/HL bull | LH/LL bear</div></div></div>
+        <div class="check-item" id="c2" onclick="tick(2)"><div class="check-box" id="cb2"></div><div><div class="check-label">Previous day close confirmed</div><div class="check-sub">Following day same direction?</div></div></div>
+        <div class="check-item" id="c3" onclick="tick(3)"><div class="check-box" id="cb3"></div><div><div class="check-label">Daily bias set</div><div class="check-sub">Bullish or Bearish today?</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Entry Confirmation</div>
+        <div class="check-item" id="c4" onclick="tick(4)"><div class="check-box" id="cb4"></div><div><div class="check-label">1H structure aligns</div><div class="check-sub">1H confirms daily bias</div></div></div>
+        <div class="check-item" id="c5" onclick="tick(5)"><div class="check-box" id="cb5"></div><div><div class="check-label">5M setup ready</div><div class="check-sub">C1 Bearish → C2 Sweep → C3 Bullish</div></div></div>
+        <div class="check-item" id="c6" onclick="tick(6)"><div class="check-box" id="cb6"></div><div><div class="check-label">Imbalance / OB present</div><div class="check-sub">Key level for entry</div></div></div>
+        <div class="check-item" id="c7" onclick="tick(7)"><div class="check-box" id="cb7"></div><div><div class="check-label">No high-impact news 30min</div><div class="check-sub">Check ForexFactory first</div></div></div>
+        <div class="check-item" id="c8" onclick="tick(8)"><div class="check-box" id="cb8"></div><div><div class="check-label">R:R minimum 1:2</div><div class="check-sub">Worth the risk</div></div></div>
+        <div class="grade-bar"><div class="grade-fill" id="g-fill" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--t3)">
+          <span id="g-count">0 / 9</span><span id="g-grade" style="font-weight:600">—</span>
         </div>
       </div>
-
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-title">Setup Grade</div>
-          <div id="grade-display" style="text-align:center;padding:20px 0">
-            <div style="font-size:48px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text3)" id="grade-big">—</div>
-            <div style="font-size:13px;color:var(--text3);margin-top:6px" id="grade-msg">Complete checklist to grade setup</div>
-          </div>
-          <button class="btn btn-gold" style="width:100%;margin-top:4px" onclick="showPage('trade')">Proceed to Trade Entry →</button>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Setup Grade</div>
+        <div style="text-align:center;padding:20px 0">
+          <div style="font-size:56px;font-weight:700;font-family:'JetBrains Mono',monospace" id="big-grade">—</div>
+          <div style="font-size:13px;color:var(--t3);margin-top:8px" id="big-msg">Complete checklist</div>
         </div>
-
-        <div class="card">
-          <div class="card-title">Quick Notes</div>
-          <textarea class="form-input" style="height:140px;resize:none;font-family:'Inter',sans-serif;line-height:1.6" placeholder="Write your trade idea, observations, what you're seeing on chart..."></textarea>
-          <div style="margin-top:10px;font-size:11px;color:var(--text3)">These notes will carry into your trade entry</div>
-        </div>
+        <button class="btn btn-gold" style="width:100%" onclick="go('trade')">Proceed to Trade →</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Trade Notes</div>
+        <textarea class="form-input" id="check-notes" style="height:120px;resize:none;font-family:'Inter',sans-serif;line-height:1.6" placeholder="What do you see on chart? Your plan..."></textarea>
       </div>
     </div>
   </div>
@@ -467,111 +337,113 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 <!-- NEW TRADE -->
 <div id="page-trade" class="page">
   <div class="topbar">
-    <div>
-      <div class="page-title">New Trade</div>
-      <div class="page-sub">Log and analyze your setup</div>
-    </div>
+    <div><div class="page-title">New Trade</div><div class="page-sub">Log your setup</div></div>
   </div>
-  <div class="content">
-    <div class="grid-2">
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-title">Trade Details</div>
-          <div class="form-grid" style="margin-bottom:12px">
-            <div class="form-group">
-              <label class="form-label">Pair</label>
-              <select class="form-select" id="t-pair" onchange="calcRR()">
-                <option value="XAUUSD">XAUUSD — Gold</option>
-                <option value="EURUSD">EURUSD</option>
-                <option value="GBPUSD">GBPUSD</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Direction</label>
-              <select class="form-select" id="t-dir">
-                <option value="LONG">LONG — Buy</option>
-                <option value="SHORT">SHORT — Sell</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Entry Price</label>
-              <input class="form-input" type="number" id="t-entry" placeholder="0.00000" oninput="calcRR()">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Stop Loss</label>
-              <input class="form-input" type="number" id="t-sl" placeholder="0.00000" oninput="calcRR()">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Take Profit</label>
-              <input class="form-input" type="number" id="t-tp" placeholder="0.00000" oninput="calcRR()">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Lot Size</label>
-              <input class="form-input" type="number" id="t-lot" placeholder="0.01" step="0.01">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Session</label>
-              <select class="form-select" id="t-session">
-                <option value="London">London</option>
-                <option value="NY">New York</option>
-                <option value="Overlap">LN/NY Overlap</option>
-                <option value="Asian">Asian</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Setup Type</label>
-              <select class="form-select" id="t-setup">
-                <option value="C1C2C3">C1 Bear → C2 Sweep → C3 Bull</option>
-                <option value="Imbalance">Imbalance Entry</option>
-                <option value="OB">Order Block</option>
-                <option value="Sweep">Liquidity Sweep</option>
-              </select>
-            </div>
+  <div class="grid2">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Trade Details</div>
+        <div class="form-grid" style="margin-bottom:12px">
+          <div class="form-group"><label class="form-label">Pair</label>
+            <select class="form-select" id="t-pair" onchange="calcRR()">
+              <option value="XAUUSD">XAUUSD — Gold</option>
+              <option value="EURUSD">EURUSD</option>
+              <option value="GBPUSD">GBPUSD</option>
+            </select>
           </div>
-          <div class="form-group" style="margin-bottom:12px">
-            <label class="form-label">Trade Notes</label>
-            <textarea class="form-input" id="t-notes" style="height:80px;resize:none;font-family:'Inter',sans-serif" placeholder="What did you see? Why this entry?"></textarea>
+          <div class="form-group"><label class="form-label">Direction</label>
+            <select class="form-select" id="t-dir">
+              <option value="LONG">LONG — Buy</option>
+              <option value="SHORT">SHORT — Sell</option>
+            </select>
           </div>
-
-          <div class="rr-display" id="rr-display">
-            <div class="rr-item"><div class="rr-val" id="rr-risk">—</div><div class="rr-label">Risk Pips</div></div>
-            <div class="rr-item"><div class="rr-val" id="rr-reward">—</div><div class="rr-label">Reward Pips</div></div>
-            <div class="rr-item"><div class="rr-val" id="rr-ratio">—</div><div class="rr-label">R:R Ratio</div></div>
+          <div class="form-group"><label class="form-label">Entry</label><input class="form-input" id="t-entry" type="number" placeholder="0.00000" oninput="calcRR()"></div>
+          <div class="form-group"><label class="form-label">Stop Loss</label><input class="form-input" id="t-sl" type="number" placeholder="0.00000" oninput="calcRR()"></div>
+          <div class="form-group"><label class="form-label">Take Profit</label><input class="form-input" id="t-tp" type="number" placeholder="0.00000" oninput="calcRR()"></div>
+          <div class="form-group"><label class="form-label">Lot Size</label><input class="form-input" id="t-lot" type="number" placeholder="0.01" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Session</label>
+            <select class="form-select" id="t-session">
+              <option value="London">London</option>
+              <option value="NY">New York</option>
+              <option value="Overlap">LN/NY Overlap</option>
+              <option value="Asian">Asian</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Setup</label>
+            <select class="form-select" id="t-setup">
+              <option value="C1C2C3">C1 Bear → C2 Sweep → C3 Bull</option>
+              <option value="Imbalance">Imbalance Entry</option>
+              <option value="OB">Order Block</option>
+              <option value="Sweep">Liquidity Sweep</option>
+            </select>
           </div>
         </div>
-
-        <div style="display:flex;gap:10px">
-          <button class="btn btn-gold" style="flex:1" onclick="analyzeWithClaude()">Analyze with AI →</button>
-          <button class="btn" style="flex:1" onclick="saveTrade()">Save Trade</button>
+        <div class="form-group"><label class="form-label">Notes</label>
+          <textarea class="form-input" id="t-notes" style="height:70px;resize:none;font-family:'Inter',sans-serif" placeholder="What did you see? Why this entry?"></textarea>
+        </div>
+        <div class="rr-box">
+          <div class="rr-item"><div class="rr-val" id="rr-risk">—</div><div class="rr-label">Risk Pips</div></div>
+          <div class="rr-item"><div class="rr-val" id="rr-reward">—</div><div class="rr-label">Reward Pips</div></div>
+          <div class="rr-item"><div class="rr-val" id="rr-ratio">—</div><div class="rr-label">R:R</div></div>
         </div>
       </div>
 
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="ai-label"><div class="ai-dot"></div> Claude Analysis</div>
-          <div class="ai-box" id="ai-result">
-            <div style="color:var(--text3);font-size:13px">Fill in trade details and click "Analyze with AI" to get your setup graded.</div>
-          </div>
+      <!-- Screenshot upload -->
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Chart Screenshot</div>
+        <div class="upload-area" onclick="document.getElementById('sc-input').click()">
+          <div style="font-size:24px;margin-bottom:8px">📸</div>
+          <div style="font-size:13px;color:var(--t2)">Click to upload chart screenshot</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">PNG, JPG supported</div>
+          <input type="file" id="sc-input" accept="image/*" style="display:none" onchange="previewShot(this)">
+          <img id="sc-preview" class="upload-preview">
         </div>
+      </div>
 
-        <div class="card">
-          <div class="card-title">Trade Result (after close)</div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label">Result</label>
-              <select class="form-select" id="t-result">
-                <option value="OPEN">Still Open</option>
-                <option value="WIN">Win ✓</option>
-                <option value="LOSS">Loss ✗</option>
-                <option value="BE">Break Even</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Actual Pips</label>
-              <input class="form-input" type="number" id="t-actual-pips" placeholder="e.g. 45">
-            </div>
+      <div class="card">
+        <div class="card-title">Result (after close)</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Result</label>
+            <select class="form-select" id="t-result">
+              <option value="OPEN">Still Open</option>
+              <option value="WIN">Win ✓</option>
+              <option value="LOSS">Loss ✗</option>
+              <option value="BE">Break Even</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Actual Pips</label>
+            <input class="form-input" id="t-pips" type="number" placeholder="e.g. 45">
           </div>
         </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- MYR Calculator -->
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">MYR Profit Calculator</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Lot Size</label><input class="form-input" id="myr-lot" type="number" placeholder="0.1" oninput="calcMYR()"></div>
+          <div class="form-group"><label class="form-label">Pips</label><input class="form-input" id="myr-pips" type="number" placeholder="30" oninput="calcMYR()"></div>
+          <div class="form-group"><label class="form-label">Pair</label>
+            <select class="form-select" id="myr-pair" onchange="calcMYR()">
+              <option value="XAUUSD">XAUUSD Gold</option>
+              <option value="EURUSD">EURUSD</option>
+              <option value="GBPUSD">GBPUSD</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">USD/MYR Rate</label><input class="form-input" id="myr-rate" type="number" value="4.72" oninput="calcMYR()"></div>
+        </div>
+        <div class="myr-result">
+          <div class="myr-val" id="myr-result">RM 0.00</div>
+          <div class="myr-label">Estimated P&L</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px" id="myr-usd">$0.00 USD</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-gold" style="flex:1" onclick="saveTrade()">Save Trade ✓</button>
+        <button class="btn" style="flex:1" onclick="clearTradeForm()">Clear</button>
       </div>
     </div>
   </div>
@@ -580,80 +452,15 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 <!-- JOURNAL -->
 <div id="page-journal" class="page">
   <div class="topbar">
-    <div>
-      <div class="page-title">Trade Journal</div>
-      <div class="page-sub" id="journal-count">0 trades logged</div>
-    </div>
-    <button class="btn" onclick="clearJournal()" style="color:var(--red);border-color:var(--red)">Clear All</button>
+    <div><div class="page-title">Trade Journal</div><div class="page-sub" id="j-count">0 trades</div></div>
+    <button class="btn btn-sm" style="color:var(--red)" onclick="if(confirm('Clear all?')){trades=[];save();renderJ()}">Clear All</button>
   </div>
-  <div class="content">
-    <div class="card">
-      <div style="overflow-x:auto">
-        <table class="journal-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Pair</th>
-              <th>Dir</th>
-              <th>Setup</th>
-              <th>Entry</th>
-              <th>SL</th>
-              <th>TP</th>
-              <th>R:R</th>
-              <th>Session</th>
-              <th>Result</th>
-              <th>Pips</th>
-            </tr>
-          </thead>
-          <tbody id="journal-tbody">
-            <tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text3)">No trades yet. Start logging!</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ANALYTICS -->
-<div id="page-analytics" class="page">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Analytics</div>
-      <div class="page-sub">Your trading patterns</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="grid-3" style="margin-bottom:20px">
-      <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value green" id="a-winrate">0%</div></div>
-      <div class="stat-card"><div class="stat-label">Total Pips</div><div class="stat-value" id="a-pips">0</div></div>
-      <div class="stat-card"><div class="stat-label">Avg R:R</div><div class="stat-value gold" id="a-rr">0</div></div>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Win Rate by Pair</div>
-        <div class="mini-bar" id="pair-bars">
-          <div style="color:var(--text3);font-size:12px">No data yet</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Trades by Session</div>
-        <div class="mini-bar" id="session-bars">
-          <div style="color:var(--text3);font-size:12px">No data yet</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">AI Pattern Analysis</div>
-        <div id="pattern-analysis" style="font-size:13px;color:var(--text2);line-height:1.7">
-          <div style="color:var(--text3)">Add more trades to unlock pattern analysis</div>
-        </div>
-        <button class="btn" style="margin-top:12px;width:100%" onclick="analyzePatterns()">Analyze My Patterns ↗</button>
-      </div>
-      <div class="card">
-        <div class="card-title">Day of Week Performance</div>
-        <div class="mini-bar" id="day-bars">
-          <div style="color:var(--text3);font-size:12px">No data yet</div>
-        </div>
-      </div>
+  <div class="card">
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th>Date</th><th>Pair</th><th>Dir</th><th>Setup</th><th>Entry</th><th>SL</th><th>TP</th><th>R:R</th><th>Session</th><th>Result</th><th>Pips</th><th>MYR</th></tr></thead>
+        <tbody id="j-body"><tr><td colspan="12" style="text-align:center;padding:30px;color:var(--t3)">No trades yet</td></tr></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -661,137 +468,160 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 <!-- BACKTEST -->
 <div id="page-backtest" class="page">
   <div class="topbar">
+    <div><div class="page-title">Backtest</div><div class="page-sub">Log past setups</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Add Backtest Trade</div>
+      <div class="form-grid" style="margin-bottom:12px">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="bt-date" type="date"></div>
+        <div class="form-group"><label class="form-label">Pair</label>
+          <select class="form-select" id="bt-pair">
+            <option value="XAUUSD">XAUUSD</option>
+            <option value="EURUSD">EURUSD</option>
+            <option value="GBPUSD">GBPUSD</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Entry</label><input class="form-input" id="bt-entry" type="number" placeholder="0.00" oninput="calcBTRR()"></div>
+        <div class="form-group"><label class="form-label">SL</label><input class="form-input" id="bt-sl" type="number" placeholder="0.00" oninput="calcBTRR()"></div>
+        <div class="form-group"><label class="form-label">TP</label><input class="form-input" id="bt-tp" type="number" placeholder="0.00" oninput="calcBTRR()"></div>
+        <div class="form-group"><label class="form-label">Result</label>
+          <select class="form-select" id="bt-result">
+            <option value="WIN">Win</option>
+            <option value="LOSS">Loss</option>
+            <option value="BE">Break Even</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Setup</label>
+          <select class="form-select" id="bt-setup">
+            <option value="C1C2C3">C1C2C3</option>
+            <option value="Imbalance">Imbalance</option>
+            <option value="OB">Order Block</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Actual Pips</label><input class="form-input" id="bt-pips" type="number" placeholder="30"></div>
+      </div>
+      <button class="btn btn-gold" style="width:100%" onclick="saveBT()">Add Backtest</button>
+    </div>
     <div>
-      <div class="page-title">Backtest</div>
-      <div class="page-sub">Test your strategy on past setups</div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Backtest Stats</div>
+        <div style="display:flex;flex-direction:column;gap:10px" id="bt-stats">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t3)">Total BT Trades</span><span class="gold" style="font-family:'JetBrains Mono',monospace" id="bt-total">0</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t3)">Win Rate</span><span class="green" style="font-family:'JetBrains Mono',monospace" id="bt-wr">0%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t3)">Total Pips</span><span style="font-family:'JetBrains Mono',monospace" id="bt-tp2">0</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t3)">Best Pair</span><span class="gold" style="font-family:'JetBrains Mono',monospace" id="bt-best">—</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="card-title" style="margin-bottom:0">Backtest Log</div>
+          <button class="btn btn-sm" style="color:var(--red)" onclick="if(confirm('Clear?')){bts=[];saveBTs();renderBT()}">Clear</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Pair</th><th>Setup</th><th>R:R</th><th>Result</th><th>Pips</th></tr></thead>
+            <tbody id="bt-body"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">No backtest data</td></tr></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="content">
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Log Backtest Trade</div>
-        <div class="form-grid" style="margin-bottom:12px">
-          <div class="form-group">
-            <label class="form-label">Date</label>
-            <input class="form-input" type="date" id="bt-date">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Pair</label>
-            <select class="form-select" id="bt-pair">
-              <option value="XAUUSD">XAUUSD</option>
-              <option value="EURUSD">EURUSD</option>
-              <option value="GBPUSD">GBPUSD</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Entry</label>
-            <input class="form-input" type="number" id="bt-entry" placeholder="0.00000" oninput="calcBTRR()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">SL</label>
-            <input class="form-input" type="number" id="bt-sl" placeholder="0.00000" oninput="calcBTRR()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">TP</label>
-            <input class="form-input" type="number" id="bt-tp" placeholder="0.00000" oninput="calcBTRR()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Result</label>
-            <select class="form-select" id="bt-result">
-              <option value="WIN">Win</option>
-              <option value="LOSS">Loss</option>
-              <option value="BE">Break Even</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Setup</label>
-            <select class="form-select" id="bt-setup">
-              <option value="C1C2C3">C1C2C3</option>
-              <option value="Imbalance">Imbalance</option>
-              <option value="OB">Order Block</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Actual Pips</label>
-            <input class="form-input" type="number" id="bt-pips" placeholder="e.g. 40">
-          </div>
-        </div>
-        <button class="btn btn-gold" style="width:100%" onclick="saveBacktest()">Add Backtest Trade</button>
-      </div>
+</div>
 
-      <div class="card">
-        <div class="card-title">Backtest Stats</div>
-        <div id="bt-stats">
-          <div class="bt-row"><span class="bt-label">Total BT Trades</span><span class="bt-val gold" id="bt-total">0</span></div>
-          <div class="bt-row"><span class="bt-label">Win Rate</span><span class="bt-val green" id="bt-winrate">0%</span></div>
-          <div class="bt-row"><span class="bt-label">Total Pips</span><span class="bt-val" id="bt-totalpips">0</span></div>
-          <div class="bt-row"><span class="bt-label">Best Setup</span><span class="bt-val gold" id="bt-bestsetup">—</span></div>
-          <div class="bt-row"><span class="bt-label">Best Pair</span><span class="bt-val gold" id="bt-bestpair">—</span></div>
-          <div class="bt-row"><span class="bt-label">Expectancy</span><span class="bt-val" id="bt-expect">—</span></div>
-        </div>
-        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-          <button class="btn" style="width:100%" onclick="analyzeBT()">AI Backtest Analysis ↗</button>
-        </div>
-        <div id="bt-ai-result" style="margin-top:12px;font-size:13px;color:var(--text2);line-height:1.7"></div>
-      </div>
-    </div>
-
+<!-- ANALYTICS -->
+<div id="page-analytics" class="page">
+  <div class="topbar"><div><div class="page-title">Analytics</div><div class="page-sub">Your patterns</div></div></div>
+  <div class="grid3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-val green" id="a-wr">0%</div></div>
+    <div class="stat"><div class="stat-label">Total Pips</div><div class="stat-val" id="a-pips">0</div></div>
+    <div class="stat"><div class="stat-label">Avg R:R</div><div class="stat-val gold" id="a-rr">0</div></div>
+  </div>
+  <div class="grid2">
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div class="card-title" style="margin-bottom:0">Backtest Log</div>
-        <button class="btn" onclick="clearBacktest()" style="font-size:12px;color:var(--red)">Clear</button>
-      </div>
-      <div style="overflow-x:auto">
-        <table class="journal-table">
-          <thead><tr><th>Date</th><th>Pair</th><th>Setup</th><th>Entry</th><th>SL</th><th>TP</th><th>R:R</th><th>Result</th><th>Pips</th></tr></thead>
-          <tbody id="bt-tbody"><tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text3)">No backtest data yet</td></tr></tbody>
-        </table>
-      </div>
+      <div class="card-title">Win Rate by Pair</div>
+      <div id="pair-bars"><div style="color:var(--t3);font-size:12px">No data yet</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Trades by Session</div>
+      <div id="session-bars"><div style="color:var(--t3);font-size:12px">No data yet</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Day of Week</div>
+      <div id="day-bars"><div style="color:var(--t3);font-size:12px">No data yet</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Setup Performance</div>
+      <div id="setup-bars"><div style="color:var(--t3);font-size:12px">No data yet</div></div>
     </div>
   </div>
 </div>
 
 <!-- NEWS -->
 <div id="page-news" class="page">
-  <div class="topbar">
-    <div>
-      <div class="page-title">News & Events</div>
-      <div class="page-sub">Add important news manually</div>
+  <div class="topbar"><div><div class="page-title">News & Events</div><div class="page-sub">Paste from X / ForexFactory</div></div></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Add News</div>
+      <div class="form-group"><label class="form-label">Headline</label><input class="form-input" id="n-title" placeholder="e.g. Fed keeps rates unchanged" style="font-family:'Inter',sans-serif"></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Time (MY)</label><input class="form-input" id="n-time" type="time"></div>
+        <div class="form-group"><label class="form-label">Impact</label>
+          <select class="form-select" id="n-impact">
+            <option value="HIGH">🔴 High</option>
+            <option value="MED">🟡 Medium</option>
+            <option value="LOW">🟢 Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Currency</label><input class="form-input" id="n-cur" placeholder="USD, EUR, GBP, XAU" style="font-family:'Inter',sans-serif"></div>
+      <button class="btn btn-gold" style="width:100%" onclick="addNews()">Add to Feed</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Today's News Feed</div>
+      <div id="news-feed"><div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">No news added.<br>Paste from X or ForexFactory.</div></div>
     </div>
   </div>
-  <div class="content">
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Add News / Event</div>
-        <div class="form-group" style="margin-bottom:10px">
-          <label class="form-label">Headline</label>
-          <input class="form-input" id="news-title" placeholder="e.g. Fed keeps rates unchanged" style="font-family:'Inter',sans-serif">
-        </div>
-        <div class="form-grid" style="margin-bottom:10px">
-          <div class="form-group">
-            <label class="form-label">Time</label>
-            <input class="form-input" type="time" id="news-time">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Impact</label>
-            <select class="form-select" id="news-impact">
-              <option value="HIGH">High Impact 🔴</option>
-              <option value="MED">Medium Impact 🟡</option>
-              <option value="LOW">Low Impact 🟢</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:12px">
-          <label class="form-label">Currency Affected</label>
-          <input class="form-input" id="news-currency" placeholder="USD, EUR, GBP, XAU..." style="font-family:'Inter',sans-serif">
-        </div>
-        <button class="btn btn-gold" style="width:100%" onclick="addNews()">Add to Feed</button>
-      </div>
+</div>
 
+<!-- MYR CALCULATOR -->
+<div id="page-calc" class="page">
+  <div class="topbar"><div><div class="page-title">MYR Calculator</div><div class="page-sub">XAUUSD Scalp P&L</div></div></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Calculate P&L</div>
+      <div class="form-group"><label class="form-label">Pair</label>
+        <select class="form-select" id="c-pair" onchange="calcFull()">
+          <option value="XAUUSD">XAUUSD Gold</option>
+          <option value="EURUSD">EURUSD</option>
+          <option value="GBPUSD">GBPUSD</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Lot Size</label><input class="form-input" id="c-lot" type="number" placeholder="0.1" value="0.1" oninput="calcFull()"></div>
+      <div class="form-group"><label class="form-label">Entry Price</label><input class="form-input" id="c-entry" type="number" placeholder="4200.00" oninput="calcFull()"></div>
+      <div class="form-group"><label class="form-label">Exit / TP Price</label><input class="form-input" id="c-exit" type="number" placeholder="4230.00" oninput="calcFull()"></div>
+      <div class="form-group"><label class="form-label">USD/MYR Rate</label><input class="form-input" id="c-rate" type="number" value="4.72" oninput="calcFull()"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Result</div>
+        <div class="grid2" style="gap:10px;margin-bottom:14px">
+          <div class="stat"><div class="stat-label">Pips</div><div class="stat-val gold" id="c-pips">0</div></div>
+          <div class="stat"><div class="stat-label">USD Profit</div><div class="stat-val green" id="c-usd">$0</div></div>
+        </div>
+        <div class="myr-result">
+          <div class="myr-val" id="c-myr">RM 0.00</div>
+          <div class="myr-label">MYR Profit / Loss</div>
+        </div>
+      </div>
       <div class="card">
-        <div class="card-title">Today's News Feed</div>
-        <div id="news-feed">
-          <div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">No news added yet.<br>Paste from X / ForexFactory above.</div>
+        <div class="card-title">XAUUSD Scalp Guide</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.9">
+          <div>📌 1 pip = $1 per 0.1 lot (Gold)</div>
+          <div>📌 0.1 lot × 30 pips = $30 = ~RM 141</div>
+          <div>📌 0.1 lot × 50 pips = $50 = ~RM 236</div>
+          <div>📌 London session best for Gold</div>
+          <div>📌 Avoid 30min before high impact news</div>
         </div>
       </div>
     </div>
@@ -802,403 +632,346 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 </div>
 
 <script>
-const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+// Data
+let trades = JSON.parse(localStorage.getItem('td_trades')||'[]');
+let bts = JSON.parse(localStorage.getItem('td_bts')||'[]');
+let newsItems = JSON.parse(localStorage.getItem('td_news')||'[]');
+let checks = new Array(9).fill(false);
 
-async function callGemini(prompt, maxTokens=300) {
-  const key = GROQ_KEY || localStorage.getItem('groq_api_key') || '';
-  if(!key) throw new Error('No API key set');
-  const url = GEMINI_API_BASE + '?key=' + key;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      contents: [{parts: [{text: prompt}]}],
-      generationConfig: {maxOutputTokens: maxTokens, temperature: 0.7}
-    })
-  });
-  const data = await resp.json();
-  if(data.error) throw new Error(data.error.message);
-  if(!data.candidates || !data.candidates[0]) throw new Error('No response from Gemini');
-  return data.candidates[0].content.parts[0].text;
-}
+function save(){ localStorage.setItem('td_trades', JSON.stringify(trades)); }
+function saveBTs(){ localStorage.setItem('td_bts', JSON.stringify(bts)); }
+function saveNews(){ localStorage.setItem('td_news', JSON.stringify(newsItems)); }
 
-let GROQ_KEY = localStorage.getItem('groq_api_key') || '';
-let trades = JSON.parse(localStorage.getItem('forex_trades') || '[]');
-let btTrades = JSON.parse(localStorage.getItem('forex_bt') || '[]');
-let newsItems = JSON.parse(localStorage.getItem('forex_news') || '[]');
-let checks = new Array(8).fill(false);
-
-function saveApiKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  if(k) { GROQ_KEY=k; localStorage.setItem('groq_api_key',k); document.getElementById('api-key-status').textContent='✓ Saved!'; document.getElementById('api-key-status').style.color='var(--green)'; setTimeout(()=>{ document.getElementById('api-key-modal').style.display='none'; loadDailyBrief(); },800); }
-}
-function openSettings(){ document.getElementById('api-key-modal').style.display='flex'; document.getElementById('api-key-input').value=GROQ_KEY; }
-function closeSettings(){ document.getElementById('api-key-modal').style.display='none'; }
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  const navMap = {dashboard:0,checklist:1,trade:2,journal:3,backtest:4,analytics:5,news:6};
-  document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
-  if(id==='journal') renderJournal();
-  if(id==='analytics') renderAnalytics();
+// Navigation
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const map={dashboard:0,market:1,checklist:2,trade:3,journal:4,backtest:5,analytics:6,news:7,calc:8};
+  document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
+  if(id==='journal') renderJ();
+  if(id==='analytics') renderA();
   if(id==='backtest') renderBT();
+  if(id==='market') loadChart();
+  if(id==='news') renderNews();
 }
 
-function setDate() {
+// Date + Session
+function initDate(){
   const now = new Date();
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  document.getElementById('live-date').textContent = days[now.getDay()] + ', ' + now.toLocaleDateString('en-MY', {day:'numeric',month:'long',year:'numeric'});
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  document.getElementById('dash-date').textContent = days[now.getDay()+0]+', '+now.toLocaleDateString('en-MY',{day:'numeric',month:'long',year:'numeric'});
+  const h = now.getHours();
+  const sessions = [];
+  if(h>=3&&h<10) sessions.push('Asian');
+  if(h>=15&&h<19) sessions.push('London');
+  if(h>=20&&h<24) sessions.push('NY');
+  if(h>=20&&h<23) sessions.push('Overlap');
+  
+  document.getElementById('session-now').textContent = sessions.length ? '🟢 '+sessions.join(' + ')+' Session' : '⏳ Off Hours';
+  
+  ['asian','london','ny','overlap'].forEach(s=>{
+    const el = document.getElementById('s-'+s);
+    if(el) el.classList.remove('active-session');
+  });
+  if(h>=3&&h<10) document.getElementById('s-asian')?.classList.add('active-session');
+  if(h>=15&&h<19) document.getElementById('s-london')?.classList.add('active-session');
+  if(h>=20&&h<24) document.getElementById('s-ny')?.classList.add('active-session');
+  if(h>=20&&h<23) document.getElementById('s-overlap')?.classList.add('active-session');
 }
 
-async function loadPrices() {
-  try {
-    // EUR/USD and GBP/USD from Frankfurter (reliable, CORS-free)
-    const [eurRes, gbpRes] = await Promise.all([
-      fetch('https://api.frankfurter.app/latest?from=EUR&to=USD').then(r=>r.json()).catch(()=>null),
-      fetch('https://api.frankfurter.app/latest?from=GBP&to=USD').then(r=>r.json()).catch(()=>null)
-    ]);
-    const eurRate = eurRes?.rates?.USD;
-    const gbpRate = gbpRes?.rates?.USD;
-    if(eurRate){ document.getElementById('eur-price').textContent = eurRate.toFixed(5); }
-    if(gbpRate){ document.getElementById('gbp-price').textContent = gbpRate.toFixed(5); }
+// Checklist
+const grades=['—','F','D','C','C+','B','B+','A','A','A+'];
+const colors=['var(--t3)','var(--red)','var(--red)','var(--red)','var(--gold)','var(--gold)','var(--gold)','var(--green)','var(--green)','var(--green)'];
+const msgs=['Complete checklist','Very incomplete','Very risky','Needs work','Below standard','Acceptable','Good setup','Strong setup','Strong setup','A+ Setup — Take it!'];
 
-    // Gold price from open metals API
-    const goldRes = await fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).catch(()=>null);
-    const goldPrice = goldRes?.[0]?.price || goldRes?.price || null;
-    if(goldPrice){
-      document.getElementById('xau-price').textContent = parseFloat(goldPrice).toFixed(2);
-    } else {
-      // Fallback: use open exchange rates approximate
-      document.getElementById('xau-price').textContent = 'See TV';
-    }
-
-    // DXY approximation from EUR (EUR is 57.6% of DXY basket)
-    if(eurRate){
-      const dxyApprox = (1/eurRate * 57.6 + 42.4).toFixed(2);
-      document.getElementById('dxy-price').textContent = dxyApprox;
-      const dxyUp = parseFloat(dxyApprox) > 100;
-      document.getElementById('dxy-bias').textContent = dxyUp ? 'BULLISH' : 'BEARISH';
-      document.getElementById('dxy-bias').className = 'bias-badge ' + (dxyUp ? 'bias-bull' : 'bias-bear');
-      const dxyMsg = dxyUp ? '🔴 DXY UP — USD Strong. Gold & pairs likely pressured down.' : '🟢 DXY DOWN — USD Weak. Gold & pairs likely pushed up.';
-      document.getElementById('dxy-analysis').textContent = dxyMsg;
-      const pairsUp = !dxyUp;
-      ['eur-bias','gbp-bias','xau-bias'].forEach(id=>{
-        document.getElementById(id).textContent = pairsUp?'BULLISH':'BEARISH';
-        document.getElementById(id).className='bias-badge '+(pairsUp?'bias-bull':'bias-bear');
-      });
-    }
-  } catch(e) {
-    ['dxy-price','xau-price','eur-price','gbp-price'].forEach(id=>{ document.getElementById(id).textContent='—'; });
-    document.getElementById('dxy-analysis').textContent = 'Auto price unavailable. Enter manually or check TradingView.';
-  }
+function tick(i){
+  checks[i]=!checks[i];
+  document.getElementById('c'+i).classList.toggle('done',checks[i]);
+  document.getElementById('cb'+i).innerHTML=checks[i]?'✓':'';
+  const n=checks.filter(Boolean).length;
+  document.getElementById('g-fill').style.width=(n/9*100)+'%';
+  document.getElementById('g-count').textContent=n+' / 9';
+  document.getElementById('g-grade').textContent=grades[n];
+  document.getElementById('g-grade').style.color=colors[n];
+  document.getElementById('big-grade').textContent=grades[n];
+  document.getElementById('big-grade').style.color=colors[n];
+  document.getElementById('big-msg').textContent=msgs[n];
 }
 
-async function loadDailyBrief() {
-  const el = document.getElementById('daily-brief');
-  if(!GROQ_KEY){ el.innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Groq API key to enable AI brief →</span>'; return; }
-  try {
-    const now = new Date();
-    const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][now.getDay()];
-    const hour = now.getHours();
-    let session = hour >= 15 && hour < 20 ? 'London' : hour >= 20 ? 'London/NY Overlap' : 'Pre-London';
-    const prompt = `You are a professional forex trading assistant. Today is ${day}. Current session: ${session} (Malaysia time). 
-The trader focuses on XAUUSD (Gold), EURUSD, GBPUSD using SMC strategy (Daily bias, 1H structure, 5M entry with C1/C2/C3 candle pattern and imbalance).
-Give a brief 4-5 line daily brief covering: what session to watch, general USD sentiment today, which pair to focus on, and one key reminder. Be concise, professional, direct. No fluff.`;
-    const text = await callGemini(prompt, 300);
-    el.innerHTML = text.replace(/\n/g,'<br>');
-  } catch(e) {
-    el.innerHTML = '<span style="color:var(--red)">Error: ' + e.message + '</span><br><span style="color:var(--text3);font-size:12px">Set Groq key via ⚙ API Key button.</span>';
-  }
+function resetChecks(){
+  checks=new Array(9).fill(false);
+  for(let i=0;i<9;i++){document.getElementById('c'+i).classList.remove('done');document.getElementById('cb'+i).innerHTML='';}
+  document.getElementById('g-fill').style.width='0%';
+  document.getElementById('g-count').textContent='0 / 9';
+  document.getElementById('g-grade').textContent='—';
+  document.getElementById('big-grade').textContent='—';
+  document.getElementById('big-grade').style.color='var(--t3)';
+  document.getElementById('big-msg').textContent='Complete checklist';
 }
 
-async function analyzeWithClaude() {
-  const pair = document.getElementById('t-pair').value;
-  const dir = document.getElementById('t-dir').value;
-  const entry = document.getElementById('t-entry').value;
-  const sl = document.getElementById('t-sl').value;
-  const tp = document.getElementById('t-tp').value;
-  const setup = document.getElementById('t-setup').value;
-  const notes = document.getElementById('t-notes').value;
-  const session = document.getElementById('t-session').value;
-  if(!entry || !sl || !tp) { document.getElementById('ai-result').innerHTML = '<span style="color:var(--red)">Fill in Entry, SL and TP first.</span>'; return; }
-  if(!GROQ_KEY){ document.getElementById('ai-result').innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Groq API key first →</span>'; return; }
-  const rr = Math.abs(parseFloat(tp)-parseFloat(entry)) / Math.abs(parseFloat(sl)-parseFloat(entry));
-  document.getElementById('ai-result').innerHTML = '<div class="ai-loading"><div class="spinner"></div> Analyzing setup...</div>';
-  try {
-    const prompt = `You are an expert forex trading analyst specializing in SMC (Smart Money Concepts).
-Analyze this trade setup and give a verdict:
-Pair: ${pair} | Direction: ${dir} | Entry: ${entry} | SL: ${sl} | TP: ${tp}
-R:R Ratio: ${rr.toFixed(2)} | Session: ${session} | Setup: ${setup}
-Trader notes: ${notes || 'none'}
-Strategy rules: Daily bias → 1H structure → 5M entry (C1 Bearish, C2 Sweep, C3 Bullish or imbalance entry).
-Respond in this format:
-VERDICT: [A+ SETUP / B SETUP / SKIP]
-REASON: [2-3 sentences max — what's good or bad]
-RISK: [any risk factors to watch]
-Keep it sharp, direct, under 80 words total.`;
-    const text = await callGemini(prompt, 200);
-    const isAPlus = text.includes('A+');
-    const isSkip = text.includes('SKIP');
-    const verdictClass = isAPlus ? 'verdict-a' : isSkip ? 'verdict-skip' : 'verdict-b';
-    const verdictText = isAPlus ? '✓ A+ Setup' : isSkip ? '✗ Skip Trade' : '⚠ B Setup';
-    document.getElementById('ai-result').innerHTML = `<div class="ai-verdict ${verdictClass}">${verdictText}</div><div class="ai-text">${text.replace(/\n/g,'<br>')}</div>`;
-  } catch(e) {
-    document.getElementById('ai-result').innerHTML = '<span style="color:var(--red)">Error: ' + e.message + '</span><br><span style="color:var(--text3)">Re-enter your Gemini key via ⚙ API Key button.</span>';
-  }
+// R:R Calculator
+function calcRR(){
+  const pair=document.getElementById('t-pair').value;
+  const entry=parseFloat(document.getElementById('t-entry').value);
+  const sl=parseFloat(document.getElementById('t-sl').value);
+  const tp=parseFloat(document.getElementById('t-tp').value);
+  if(!entry||!sl||!tp) return;
+  const mult=pair==='XAUUSD'?1:10000;
+  const risk=Math.abs(entry-sl)*mult;
+  const reward=Math.abs(tp-entry)*mult;
+  const rr=reward/risk;
+  document.getElementById('rr-risk').textContent=risk.toFixed(1);
+  document.getElementById('rr-reward').textContent=reward.toFixed(1);
+  document.getElementById('rr-ratio').textContent='1:'+rr.toFixed(1);
+  document.getElementById('rr-ratio').style.color=rr>=2?'var(--green)':rr>=1.5?'var(--gold)':'var(--red)';
 }
 
-function calcRR() {
-  const entry = parseFloat(document.getElementById('t-entry').value);
-  const sl = parseFloat(document.getElementById('t-sl').value);
-  const tp = parseFloat(document.getElementById('t-tp').value);
-  const pair = document.getElementById('t-pair').value;
-  if(!entry || !sl || !tp) return;
-  const mult = pair === 'XAUUSD' ? 1 : 10000;
-  const risk = Math.abs(entry - sl) * mult;
-  const reward = Math.abs(tp - entry) * mult;
-  const rr = reward / risk;
-  document.getElementById('rr-risk').textContent = risk.toFixed(1);
-  document.getElementById('rr-reward').textContent = reward.toFixed(1);
-  document.getElementById('rr-ratio').textContent = '1:' + rr.toFixed(1);
-  document.getElementById('rr-ratio').style.color = rr >= 2 ? 'var(--green)' : rr >= 1.5 ? 'var(--gold)' : 'var(--red)';
+// MYR Calculator
+function calcMYR(){
+  const lot=parseFloat(document.getElementById('myr-lot').value)||0;
+  const pips=parseFloat(document.getElementById('myr-pips').value)||0;
+  const pair=document.getElementById('myr-pair').value;
+  const rate=parseFloat(document.getElementById('myr-rate').value)||4.72;
+  const pipVal=pair==='XAUUSD'?1:0.1;
+  const usd=lot*pips*pipVal*10;
+  const myr=usd*rate;
+  document.getElementById('myr-result').textContent='RM '+myr.toFixed(2);
+  document.getElementById('myr-usd').textContent='$'+usd.toFixed(2)+' USD';
 }
 
-function calcBTRR() {
-  const e = parseFloat(document.getElementById('bt-entry').value);
-  const s = parseFloat(document.getElementById('bt-sl').value);
-  const t = parseFloat(document.getElementById('bt-tp').value);
-  if(!e||!s||!t) return;
+// Full calc
+function calcFull(){
+  const pair=document.getElementById('c-pair').value;
+  const lot=parseFloat(document.getElementById('c-lot').value)||0;
+  const entry=parseFloat(document.getElementById('c-entry').value)||0;
+  const exit=parseFloat(document.getElementById('c-exit').value)||0;
+  const rate=parseFloat(document.getElementById('c-rate').value)||4.72;
+  if(!entry||!exit) return;
+  const mult=pair==='XAUUSD'?1:10000;
+  const pips=Math.abs(exit-entry)*mult;
+  const pipVal=pair==='XAUUSD'?1:0.1;
+  const usd=lot*pips*pipVal*10;
+  const myr=usd*rate;
+  const sign=exit>entry?1:-1;
+  document.getElementById('c-pips').textContent=(sign*pips).toFixed(1);
+  document.getElementById('c-usd').textContent='$'+(sign*usd).toFixed(2);
+  document.getElementById('c-myr').textContent='RM '+(sign*myr).toFixed(2);
+  document.getElementById('c-myr').style.color=sign>0?'var(--green)':'var(--red)';
 }
 
-function saveTrade() {
-  const trade = {
-    id: Date.now(),
-    date: new Date().toLocaleDateString('en-MY'),
-    pair: document.getElementById('t-pair').value,
-    dir: document.getElementById('t-dir').value,
-    entry: document.getElementById('t-entry').value,
-    sl: document.getElementById('t-sl').value,
-    tp: document.getElementById('t-tp').value,
-    lot: document.getElementById('t-lot').value,
-    session: document.getElementById('t-session').value,
-    setup: document.getElementById('t-setup').value,
-    notes: document.getElementById('t-notes').value,
-    result: document.getElementById('t-result').value,
-    pips: document.getElementById('t-actual-pips').value || 0
+// Screenshot preview
+function previewShot(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('sc-preview');
+    img.src=e.target.result;
+    img.style.display='block';
   };
-  const entry = parseFloat(trade.entry), sl = parseFloat(trade.sl), tp = parseFloat(trade.tp);
-  if(entry && sl && tp) {
-    trade.rr = (Math.abs(tp-entry)/Math.abs(sl-entry)).toFixed(1);
-  }
-  trades.unshift(trade);
-  localStorage.setItem('forex_trades', JSON.stringify(trades));
-  updateStats();
-  showPage('journal');
+  reader.readAsDataURL(file);
 }
 
-function saveBacktest() {
-  const bt = {
-    id: Date.now(),
-    date: document.getElementById('bt-date').value,
-    pair: document.getElementById('bt-pair').value,
-    entry: document.getElementById('bt-entry').value,
-    sl: document.getElementById('bt-sl').value,
-    tp: document.getElementById('bt-tp').value,
-    setup: document.getElementById('bt-setup').value,
-    result: document.getElementById('bt-result').value,
-    pips: parseInt(document.getElementById('bt-pips').value)||0
+// Save Trade
+function saveTrade(){
+  const pair=document.getElementById('t-pair').value;
+  const entry=parseFloat(document.getElementById('t-entry').value);
+  const sl=parseFloat(document.getElementById('t-sl').value);
+  const tp=parseFloat(document.getElementById('t-tp').value);
+  const lot=parseFloat(document.getElementById('t-lot').value)||0.01;
+  const pips=parseInt(document.getElementById('t-pips').value)||0;
+  const rate=4.72;
+  const pipVal=pair==='XAUUSD'?1:0.1;
+  const myr=(lot*pips*pipVal*10*rate).toFixed(2);
+  let rr='—';
+  if(entry&&sl&&tp){const mult=pair==='XAUUSD'?1:10000;rr=(Math.abs(tp-entry)*mult/Math.abs(entry-sl)*mult).toFixed(1);}
+  const t={
+    id:Date.now(),
+    date:new Date().toLocaleDateString('en-MY'),
+    pair,dir:document.getElementById('t-dir').value,
+    entry,sl,tp,lot,
+    session:document.getElementById('t-session').value,
+    setup:document.getElementById('t-setup').value,
+    notes:document.getElementById('t-notes').value,
+    result:document.getElementById('t-result').value,
+    pips,myr,rr,
+    screenshot:document.getElementById('sc-preview').src||''
   };
-  const e = parseFloat(bt.entry), s = parseFloat(bt.sl), t = parseFloat(bt.tp);
-  if(e&&s&&t) bt.rr = (Math.abs(t-e)/Math.abs(s-e)).toFixed(1);
-  btTrades.unshift(bt);
-  localStorage.setItem('forex_bt', JSON.stringify(btTrades));
-  renderBT();
+  trades.unshift(t);
+  save();
+  updateDashStats();
+  renderDashRecent();
+  go('journal');
 }
 
-function renderJournal() {
-  const tbody = document.getElementById('journal-tbody');
-  document.getElementById('journal-count').textContent = trades.length + ' trades logged';
-  if(!trades.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text3)">No trades yet.</td></tr>'; return; }
-  tbody.innerHTML = trades.map(t => `
+function clearTradeForm(){
+  ['t-entry','t-sl','t-tp','t-lot','t-pips','t-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sc-preview').style.display='none';
+  document.getElementById('rr-risk').textContent='—';
+  document.getElementById('rr-reward').textContent='—';
+  document.getElementById('rr-ratio').textContent='—';
+}
+
+// Render Journal
+function renderJ(){
+  const tbody=document.getElementById('j-body');
+  document.getElementById('j-count').textContent=trades.length+' trades';
+  if(!trades.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:30px;color:var(--t3)">No trades yet</td></tr>';return;}
+  tbody.innerHTML=trades.map(t=>`
     <tr>
       <td>${t.date}</td>
       <td style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--gold)">${t.pair}</td>
-      <td><span style="color:${t.dir==='LONG'?'var(--green)':'var(--red)'}">${t.dir}</span></td>
-      <td style="color:var(--text3);font-size:12px">${t.setup}</td>
-      <td style="font-family:'JetBrains Mono',monospace">${t.entry}</td>
-      <td style="font-family:'JetBrains Mono',monospace;color:var(--red)">${t.sl}</td>
-      <td style="font-family:'JetBrains Mono',monospace;color:var(--green)">${t.tp}</td>
+      <td style="color:${t.dir==='LONG'?'var(--green)':'var(--red)'}">${t.dir}</td>
+      <td style="color:var(--t3);font-size:12px">${t.setup}</td>
+      <td style="font-family:'JetBrains Mono',monospace">${t.entry||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--red)">${t.sl||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--green)">${t.tp||'—'}</td>
       <td style="font-family:'JetBrains Mono',monospace">1:${t.rr||'—'}</td>
-      <td style="color:var(--text3)">${t.session}</td>
-      <td><span class="tag ${t.result==='WIN'?'tag-win':t.result==='LOSS'?'tag-loss':t.result==='OPEN'?'tag-open':''}">${t.result}</span></td>
-      <td style="font-family:'JetBrains Mono',monospace;color:${t.pips>0?'var(--green)':'var(--text2)'}">${t.pips}</td>
+      <td style="color:var(--t3)">${t.session}</td>
+      <td><span class="tag tag-${t.result==='WIN'?'win':t.result==='LOSS'?'loss':t.result==='OPEN'?'open':'be'}">${t.result}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;color:${t.pips>0?'var(--green)':t.pips<0?'var(--red)':'var(--t2)'}">${t.pips}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:${parseFloat(t.myr)>0?'var(--green)':parseFloat(t.myr)<0?'var(--red)':'var(--t2)'}">RM${t.myr||'0'}</td>
     </tr>`).join('');
-  renderRecentTrades();
 }
 
-function renderRecentTrades() {
-  const el = document.getElementById('recent-trades-container');
-  if(!trades.length) { el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">No trades yet. <span style="color:var(--gold);cursor:pointer" onclick="showPage(\'trade\')">Add your first trade →</span></div>'; return; }
-  const recent = trades.slice(0,5);
-  el.innerHTML = `<table class="journal-table"><thead><tr><th>Date</th><th>Pair</th><th>Dir</th><th>Setup</th><th>R:R</th><th>Session</th><th>Result</th><th>Pips</th></tr></thead><tbody>${recent.map(t=>`<tr><td>${t.date}</td><td style="font-family:'JetBrains Mono',monospace;color:var(--gold)">${t.pair}</td><td style="color:${t.dir==='LONG'?'var(--green)':'var(--red)'}">${t.dir}</td><td style="color:var(--text3);font-size:12px">${t.setup}</td><td style="font-family:'JetBrains Mono',monospace">1:${t.rr||'—'}</td><td>${t.session}</td><td><span class="tag ${t.result==='WIN'?'tag-win':t.result==='LOSS'?'tag-loss':t.result==='OPEN'?'tag-open':''}">${t.result}</span></td><td style="font-family:'JetBrains Mono',monospace">${t.pips}</td></tr>`).join('')}</tbody></table>`;
-}
-
-function renderBT() {
-  const tbody = document.getElementById('bt-tbody');
-  if(!btTrades.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text3)">No backtest data</td></tr>';updateBTStats();return;}
-  tbody.innerHTML = btTrades.map(t=>`<tr><td>${t.date}</td><td style="font-family:'JetBrains Mono',monospace;color:var(--gold)">${t.pair}</td><td style="color:var(--text3);font-size:12px">${t.setup}</td><td style="font-family:'JetBrains Mono',monospace">${t.entry}</td><td style="font-family:'JetBrains Mono',monospace;color:var(--red)">${t.sl}</td><td style="font-family:'JetBrains Mono',monospace;color:var(--green)">${t.tp}</td><td style="font-family:'JetBrains Mono',monospace">1:${t.rr||'—'}</td><td><span class="tag ${t.result==='WIN'?'tag-win':'tag-loss'}">${t.result}</span></td><td style="font-family:'JetBrains Mono',monospace;color:${t.pips>0?'var(--green)':'var(--text2)'}">${t.pips}</td></tr>`).join('');
-  updateBTStats();
-}
-
-function updateBTStats() {
-  const wins = btTrades.filter(t=>t.result==='WIN').length;
-  const wr = btTrades.length ? Math.round(wins/btTrades.length*100) : 0;
-  const totalPips = btTrades.reduce((s,t)=>s+t.pips,0);
-  document.getElementById('bt-total').textContent = btTrades.length;
-  document.getElementById('bt-winrate').textContent = wr + '%';
-  document.getElementById('bt-totalpips').textContent = totalPips;
-  const pairWins = {};
-  btTrades.forEach(t=>{ if(!pairWins[t.pair]) pairWins[t.pair]={w:0,t:0}; pairWins[t.pair].t++; if(t.result==='WIN') pairWins[t.pair].w++; });
-  let best = '—'; let bestRate = 0;
-  Object.entries(pairWins).forEach(([p,v])=>{ const r=v.w/v.t; if(r>bestRate){bestRate=r;best=p;} });
-  document.getElementById('bt-bestpair').textContent = best;
-  const setupWins = {};
-  btTrades.forEach(t=>{ if(!setupWins[t.setup]) setupWins[t.setup]={w:0,t:0}; setupWins[t.setup].t++; if(t.result==='WIN') setupWins[t.setup].w++; });
-  let bestS = '—'; let bestSR = 0;
-  Object.entries(setupWins).forEach(([s,v])=>{ const r=v.w/v.t; if(r>bestSR){bestSR=r;bestS=s;} });
-  document.getElementById('bt-bestsetup').textContent = bestS;
-}
-
-async function analyzeBT() {
-  if(!btTrades.length){document.getElementById('bt-ai-result').textContent='Add backtest trades first.';return;}
-  document.getElementById('bt-ai-result').innerHTML='<div class="ai-loading"><div class="spinner"></div> Analyzing...</div>';
-  const wins=btTrades.filter(t=>t.result==='WIN').length;
-  const wr=Math.round(wins/btTrades.length*100);
-  const pips=btTrades.reduce((s,t)=>s+t.pips,0);
-  try {
-    const btText = await callGemini(`Analyze this backtest data for a forex trader using SMC strategy on XAUUSD/EURUSD/GBPUSD:
-Total trades: ${btTrades.length}, Win rate: ${wr}%, Total pips: ${pips}
-Trades: ${JSON.stringify(btTrades.slice(0,20))}
-Give 3 key insights about the strategy performance, what's working, what to improve. Under 100 words, direct and specific.`, 300);
-    document.getElementById('bt-ai-result').innerHTML=btText.replace(/\n/g,'<br>');
-  } catch(e){document.getElementById('bt-ai-result').innerHTML='<span style="color:var(--red)">Error: '+e.message+'</span>';}
-}
-
-function updateStats() {
-  const total = trades.length;
-  const wins = trades.filter(t=>t.result==='WIN').length;
-  const wr = total ? Math.round(wins/total*100) : 0;
-  const pips = trades.reduce((s,t)=>s+parseInt(t.pips||0),0);
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-winrate').textContent = wr + '%';
-  document.getElementById('stat-pips').textContent = pips;
-  const pairWins = {};
-  trades.forEach(t=>{ if(!pairWins[t.pair]){pairWins[t.pair]={w:0,t:0};} pairWins[t.pair].t++; if(t.result==='WIN') pairWins[t.pair].w++; });
-  let best='—',bestR=0;
-  Object.entries(pairWins).forEach(([p,v])=>{const r=v.w/v.t;if(r>bestR){bestR=r;best=p;}});
-  document.getElementById('stat-best').textContent = best;
-}
-
-function renderAnalytics() {
-  const total=trades.length, wins=trades.filter(t=>t.result==='WIN').length;
+// Dashboard stats
+function updateDashStats(){
+  const total=trades.length;
+  const wins=trades.filter(t=>t.result==='WIN').length;
   const wr=total?Math.round(wins/total*100):0;
   const pips=trades.reduce((s,t)=>s+parseInt(t.pips||0),0);
-  const rrs=trades.filter(t=>t.rr).map(t=>parseFloat(t.rr));
-  const avgRR=rrs.length?(rrs.reduce((a,b)=>a+b,0)/rrs.length).toFixed(1):'0';
-  document.getElementById('a-winrate').textContent=wr+'%';
+  const myr=trades.reduce((s,t)=>s+parseFloat(t.myr||0),0);
+  document.getElementById('d-total').textContent=total;
+  document.getElementById('d-wr').textContent=wr+'%';
+  document.getElementById('d-pips').textContent=pips;
+  document.getElementById('d-myr').textContent='RM '+myr.toFixed(0);
+  document.getElementById('d-myr').style.color=myr>0?'var(--green)':myr<0?'var(--red)':'var(--gold)';
+}
+
+function renderDashRecent(){
+  const el=document.getElementById('d-recent');
+  if(!trades.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--t3)">No trades yet. <span style="color:var(--gold);cursor:pointer" onclick="go(\'trade\')">Add first trade →</span></div>';return;}
+  const recent=trades.slice(0,5);
+  el.innerHTML=`<table class="table"><thead><tr><th>Date</th><th>Pair</th><th>Dir</th><th>Setup</th><th>R:R</th><th>Session</th><th>Result</th><th>Pips</th></tr></thead><tbody>${recent.map(t=>`<tr><td>${t.date}</td><td style="font-family:'JetBrains Mono',monospace;color:var(--gold)">${t.pair}</td><td style="color:${t.dir==='LONG'?'var(--green)':'var(--red)'}">${t.dir}</td><td style="color:var(--t3);font-size:12px">${t.setup}</td><td style="font-family:'JetBrains Mono',monospace">1:${t.rr||'—'}</td><td>${t.session}</td><td><span class="tag tag-${t.result==='WIN'?'win':t.result==='LOSS'?'loss':t.result==='OPEN'?'open':'be'}">${t.result}</span></td><td style="font-family:'JetBrains Mono',monospace">${t.pips}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// Analytics
+function renderA(){
+  const total=trades.length,wins=trades.filter(t=>t.result==='WIN').length;
+  const wr=total?Math.round(wins/total*100):0;
+  const pips=trades.reduce((s,t)=>s+parseInt(t.pips||0),0);
+  const rrs=trades.filter(t=>t.rr&&t.rr!=='—').map(t=>parseFloat(t.rr));
+  const avgRR=rrs.length?(rrs.reduce((a,b)=>a+b,0)/rrs.length).toFixed(1):0;
+  document.getElementById('a-wr').textContent=wr+'%';
   document.getElementById('a-pips').textContent=pips;
   document.getElementById('a-rr').textContent='1:'+avgRR;
+  
+  const mkBars=(containerId,items)=>{
+    const el=document.getElementById(containerId);
+    if(!items.length){el.innerHTML='<div style="color:var(--t3);font-size:12px">No data</div>';return;}
+    el.innerHTML=items.map(({label,val,max,cls})=>`<div class="bar-row"><span class="bar-label">${label}</span><div class="bar-track"><div class="bar-fill ${cls||''}" style="width:${max?Math.round(val/max*100):val}%"></div></div><span class="bar-val">${val}%</span></div>`).join('');
+  };
+  
   const pairs=['XAUUSD','EURUSD','GBPUSD'];
-  const pairStats={};
-  pairs.forEach(p=>{
-    const pt=trades.filter(t=>t.pair===p);
-    const pw=pt.filter(t=>t.result==='WIN').length;
-    pairStats[p]={t:pt.length,w:pw,wr:pt.length?Math.round(pw/pt.length*100):0};
-  });
-  document.getElementById('pair-bars').innerHTML=pairs.map(p=>`<div class="bar-row"><span class="bar-label">${p}</span><div class="bar-track"><div class="bar-fill ${pairStats[p].wr>=60?'green':pairStats[p].wr>=40?'':'red'}" style="width:${pairStats[p].wr}%"></div></div><span class="bar-val">${pairStats[p].wr}%</span></div>`).join('')||'<div style="color:var(--text3);font-size:12px">No data</div>';
+  const pairData=pairs.map(p=>{const pt=trades.filter(t=>t.pair===p);const pw=pt.filter(t=>t.result==='WIN').length;const wr=pt.length?Math.round(pw/pt.length*100):0;return{label:p.replace('USD',''),val:wr,cls:wr>=60?'g':wr>=40?'':'r'};}).filter(d=>trades.some(t=>t.pair===d.label+'USD'||d.label==='XAU'&&t.pair==='XAUUSD'));
+  mkBars('pair-bars',pairData);
+  
   const sessions=['London','NY','Overlap','Asian'];
-  const sStats={};
-  sessions.forEach(s=>{const st=trades.filter(t=>t.session===s);sStats[s]={t:st.length,w:st.filter(t=>t.result==='WIN').length};});
-  document.getElementById('session-bars').innerHTML=sessions.map(s=>`<div class="bar-row"><span class="bar-label">${s}</span><div class="bar-track"><div class="bar-fill" style="width:${sStats[s].t?Math.round(sStats[s].w/sStats[s].t*100):0}%"></div></div><span class="bar-val">${sStats[s].t} trades</span></div>`).join('');
+  const sData=sessions.map(s=>{const st=trades.filter(t=>t.session===s);const sw=st.filter(t=>t.result==='WIN').length;const wr=st.length?Math.round(sw/st.length*100):0;return{label:s,val:wr,cls:wr>=60?'g':''}});
+  mkBars('session-bars',sData);
+  
   const days=['Mon','Tue','Wed','Thu','Fri'];
-  document.getElementById('day-bars').innerHTML=days.map(d=>`<div class="bar-row"><span class="bar-label">${d}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.random()*80+10}%"></div></div><span class="bar-val">—</span></div>`).join('');
+  const dData=days.map(d=>({label:d,val:0,cls:''}));
+  mkBars('day-bars',dData);
+  
+  const setups=['C1C2C3','Imbalance','OB','Sweep'];
+  const stData=setups.map(s=>{const st=trades.filter(t=>t.setup===s);const sw=st.filter(t=>t.result==='WIN').length;const wr=st.length?Math.round(sw/st.length*100):0;return{label:s,val:wr,cls:wr>=60?'g':''}});
+  mkBars('setup-bars',stData);
 }
 
-async function analyzePatterns() {
-  if(trades.length<3){document.getElementById('pattern-analysis').innerHTML='<span style="color:var(--text3)">Add at least 3 trades for pattern analysis.</span>';return;}
-  document.getElementById('pattern-analysis').innerHTML='<div class="ai-loading"><div class="spinner"></div> Finding patterns...</div>';
-  try {
-    const patText=await callGemini(`Analyze trading journal for patterns. Trades: ${JSON.stringify(trades)}. Find: best session, best pair, any recurring mistakes, one actionable improvement. Under 80 words, bullet points.`, 250);
-    document.getElementById('pattern-analysis').innerHTML=patText.replace(/\n/g,'<br>');
-  } catch(e){document.getElementById('pattern-analysis').innerHTML='<span style="color:var(--red)">Error: '+e.message+'</span>';}
+// Backtest
+function calcBTRR(){
+  const e=parseFloat(document.getElementById('bt-entry').value);
+  const s=parseFloat(document.getElementById('bt-sl').value);
+  const t=parseFloat(document.getElementById('bt-tp').value);
 }
 
-function toggleCheck(i) {
-  checks[i]=!checks[i];
-  const item=document.getElementById('chk-'+i);
-  const box=document.getElementById('chk-box-'+i);
-  item.classList.toggle('checked',checks[i]);
-  box.innerHTML=checks[i]?'✓':'';
-  const count=checks.filter(Boolean).length;
-  document.getElementById('score-fill').style.width=(count/8*100)+'%';
-  document.getElementById('score-label').textContent=count+' / 8 checks';
-  const grades=['—','D','C','C+','B','B+','A','A','A+'];
-  const colors=['var(--text3)','var(--red)','var(--red)','var(--gold)','var(--gold)','var(--gold)','var(--green)','var(--green)','var(--green)'];
-  const msgs=['Complete checklist','Very incomplete','Risky setup','Below standard','Acceptable','Good setup','Strong setup','Strong setup','A+ Setup — Go!'];
-  document.getElementById('grade-big').textContent=grades[count];
-  document.getElementById('grade-big').style.color=colors[count];
-  document.getElementById('grade-msg').textContent=msgs[count];
-  document.getElementById('score-grade').textContent=grades[count];
-  document.getElementById('score-grade').style.color=colors[count];
+function saveBT(){
+  const bt={
+    id:Date.now(),
+    date:document.getElementById('bt-date').value,
+    pair:document.getElementById('bt-pair').value,
+    entry:document.getElementById('bt-entry').value,
+    sl:document.getElementById('bt-sl').value,
+    tp:document.getElementById('bt-tp').value,
+    setup:document.getElementById('bt-setup').value,
+    result:document.getElementById('bt-result').value,
+    pips:parseInt(document.getElementById('bt-pips').value)||0
+  };
+  const e=parseFloat(bt.entry),s=parseFloat(bt.sl),t2=parseFloat(bt.tp);
+  if(e&&s&&t2) bt.rr=(Math.abs(t2-e)/Math.abs(e-s)).toFixed(1);
+  bts.unshift(bt);
+  saveBTs();
+  renderBT();
 }
 
-function resetChecklist(){checks=new Array(8).fill(false);for(let i=0;i<8;i++){document.getElementById('chk-'+i).classList.remove('checked');document.getElementById('chk-box-'+i).innerHTML='';}document.getElementById('score-fill').style.width='0%';document.getElementById('score-label').textContent='0 / 8 checks';document.getElementById('grade-big').textContent='—';document.getElementById('grade-big').style.color='var(--text3)';document.getElementById('grade-msg').textContent='Complete checklist to grade setup';document.getElementById('score-grade').textContent='—';}
+function renderBT(){
+  const tbody=document.getElementById('bt-body');
+  const wins=bts.filter(t=>t.result==='WIN').length;
+  const wr=bts.length?Math.round(wins/bts.length*100):0;
+  const totalPips=bts.reduce((s,t)=>s+t.pips,0);
+  document.getElementById('bt-total').textContent=bts.length;
+  document.getElementById('bt-wr').textContent=wr+'%';
+  document.getElementById('bt-tp2').textContent=totalPips;
+  const pairWins={};
+  bts.forEach(t=>{if(!pairWins[t.pair])pairWins[t.pair]={w:0,t:0};pairWins[t.pair].t++;if(t.result==='WIN')pairWins[t.pair].w++;});
+  let best='—',bestR=0;
+  Object.entries(pairWins).forEach(([p,v])=>{const r=v.w/v.t;if(r>bestR){bestR=r;best=p;}});
+  document.getElementById('bt-best').textContent=best;
+  if(!bts.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">No backtest data</td></tr>';return;}
+  tbody.innerHTML=bts.map(t=>`<tr><td>${t.date}</td><td style="color:var(--gold);font-family:'JetBrains Mono',monospace">${t.pair}</td><td style="color:var(--t3)">${t.setup}</td><td style="font-family:'JetBrains Mono',monospace">1:${t.rr||'—'}</td><td><span class="tag tag-${t.result==='WIN'?'win':'loss'}">${t.result}</span></td><td style="font-family:'JetBrains Mono',monospace">${t.pips}</td></tr>`).join('');
+}
 
+// News
 function addNews(){
-  const title=document.getElementById('news-title').value.trim();
-  if(!title)return;
-  const item={id:Date.now(),title,time:document.getElementById('news-time').value,impact:document.getElementById('news-impact').value,currency:document.getElementById('news-currency').value};
+  const title=document.getElementById('n-title').value.trim();
+  if(!title) return;
+  const item={id:Date.now(),title,time:document.getElementById('n-time').value,impact:document.getElementById('n-impact').value,currency:document.getElementById('n-cur').value};
   newsItems.unshift(item);
-  localStorage.setItem('forex_news',JSON.stringify(newsItems));
+  saveNews();
   renderNews();
-  document.getElementById('news-title').value='';
-  document.getElementById('news-currency').value='';
+  document.getElementById('n-title').value='';
+  document.getElementById('n-cur').value='';
 }
 
 function renderNews(){
   const el=document.getElementById('news-feed');
-  if(!newsItems.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">No news added yet.</div>';return;}
-  el.innerHTML=newsItems.map(n=>`<div class="news-item"><div style="display:flex;align-items:flex-start;gap:8px"><span class="news-impact impact-${n.impact==='HIGH'?'high':n.impact==='MED'?'med':'low'}"></span><div style="flex:1"><div class="news-time">${n.time||'—'} ${n.currency?'· '+n.currency:''}</div><div class="news-title">${n.title}</div><div style="margin-top:4px"><span style="font-size:10px;padding:2px 6px;border-radius:3px;${n.impact==='HIGH'?'background:rgba(239,68,68,0.12);color:var(--red)':n.impact==='MED'?'background:rgba(240,180,41,0.12);color:var(--gold)':'background:rgba(34,197,94,0.12);color:var(--green)'}">${n.impact}</span></div></div></div></div>`).join('');
+  if(!newsItems.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">No news added yet.</div>';return;}
+  el.innerHTML=newsItems.map(n=>`<div class="news-item"><div style="display:flex;align-items:flex-start;gap:6px"><span class="impact-dot imp-${n.impact==='HIGH'?'high':n.impact==='MED'?'med':'low'}" style="margin-top:4px"></span><div><div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace">${n.time||'—'} ${n.currency?'· '+n.currency:''}</div><div style="font-size:13px;color:var(--t1);font-weight:500;margin-top:2px">${n.title}</div><div style="margin-top:4px"><span style="font-size:10px;padding:2px 6px;border-radius:3px;${n.impact==='HIGH'?'background:rgba(239,68,68,0.12);color:var(--red)':n.impact==='MED'?'background:rgba(240,180,41,0.12);color:var(--gold)':'background:rgba(34,197,94,0.12);color:var(--green)'}">${n.impact}</span></div></div></div></div>`).join('');
 }
 
-function clearJournal(){if(confirm('Clear all trades?')){trades=[];localStorage.removeItem('forex_trades');renderJournal();updateStats();}}
-function clearBacktest(){if(confirm('Clear backtest?')){btTrades=[];localStorage.removeItem('forex_bt');renderBT();}}
+// TradingView chart
+function loadChart(){
+  const container=document.getElementById('tv-chart');
+  container.innerHTML='';
+  const symbol=document.getElementById('chart-symbol')?.value||'OANDA:XAUUSD';
+  const script=document.createElement('script');
+  script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async=true;
+  script.innerHTML=JSON.stringify({autosize:true,symbol,interval:'60',timezone:'Asia/Kuala_Lumpur',theme:'dark',style:'1',locale:'en',hide_top_toolbar:false,allow_symbol_change:false,support_host:'https://www.tradingview.com',height:500});
+  container.appendChild(script);
+  container.style.height='500px';
+}
 
-setDate();
-loadPrices();
-loadDailyBrief();
-updateStats();
-renderRecentTrades();
+function updateChart(){ loadChart(); }
+
+// Init
+initDate();
+updateDashStats();
+renderDashRecent();
 renderNews();
-setInterval(loadPrices, 60000);
+setInterval(initDate, 60000);
 </script>
-
-<!-- API KEY MODAL -->
-<div id="api-key-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center">
-  <div style="background:#181c23;border:1px solid #252d3d;border-radius:12px;padding:28px;width:90%;max-width:420px">
-    <div style="font-size:16px;font-weight:600;color:#e8eaf0;margin-bottom:6px">⚙ Gemini API Key</div>
-    <div style="font-size:12px;color:#4a5168;margin-bottom:4px">Required for AI Analysis, Daily Brief, Pattern Analysis. 100% FREE!</div>
-    <div style="font-size:12px;color:#f0b429;margin-bottom:16px">Get free key → aistudio.google.com → API Keys</div>
-    <input id="api-key-input" type="password" class="form-input" placeholder="AIza..." style="margin-bottom:10px;font-family:monospace;font-size:12px">
-    <div id="api-key-status" style="font-size:12px;min-height:16px;margin-bottom:14px"></div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-gold" style="flex:1" onclick="saveApiKey()">Save & Connect</button>
-      <button class="btn" onclick="closeSettings()">Cancel</button>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
