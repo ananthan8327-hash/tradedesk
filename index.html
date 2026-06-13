@@ -802,10 +802,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 </div>
 
 <script>
-const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
 async function callGemini(prompt, maxTokens=300) {
-  const key = GEMINI_KEY || localStorage.getItem('gemini_api_key') || '';
+  const key = GROQ_KEY || localStorage.getItem('groq_api_key') || '';
   if(!key) throw new Error('No API key set');
   const url = GEMINI_API_BASE + '?key=' + key;
   const resp = await fetch(url, {
@@ -822,8 +822,7 @@ async function callGemini(prompt, maxTokens=300) {
   return data.candidates[0].content.parts[0].text;
 }
 
-let GEMINI_KEY = localStorage.getItem('gemini_api_key') || '';
-let TWELVE_KEY = localStorage.getItem('twelve_api_key') || '';
+let GROQ_KEY = localStorage.getItem('groq_api_key') || '';
 let trades = JSON.parse(localStorage.getItem('forex_trades') || '[]');
 let btTrades = JSON.parse(localStorage.getItem('forex_bt') || '[]');
 let newsItems = JSON.parse(localStorage.getItem('forex_news') || '[]');
@@ -831,12 +830,9 @@ let checks = new Array(8).fill(false);
 
 function saveApiKey() {
   const k = document.getElementById('api-key-input').value.trim();
-  const t = document.getElementById('twelve-key-input').value.trim();
-  if(k) { GEMINI_KEY=k; localStorage.setItem('gemini_api_key',k); }
-  if(t) { TWELVE_KEY=t; localStorage.setItem('twelve_api_key',t); }
-  if(k||t){ document.getElementById('api-key-status').textContent='✓ Saved!'; document.getElementById('api-key-status').style.color='var(--green)'; setTimeout(()=>{ document.getElementById('api-key-modal').style.display='none'; loadDailyBrief(); loadPrices(); },800); }
+  if(k) { GROQ_KEY=k; localStorage.setItem('groq_api_key',k); document.getElementById('api-key-status').textContent='✓ Saved!'; document.getElementById('api-key-status').style.color='var(--green)'; setTimeout(()=>{ document.getElementById('api-key-modal').style.display='none'; loadDailyBrief(); },800); }
 }
-function openSettings(){ document.getElementById('api-key-modal').style.display='flex'; document.getElementById('api-key-input').value=GEMINI_KEY; document.getElementById('twelve-key-input').value=TWELVE_KEY; }
+function openSettings(){ document.getElementById('api-key-modal').style.display='flex'; document.getElementById('api-key-input').value=GROQ_KEY; }
 function closeSettings(){ document.getElementById('api-key-modal').style.display='none'; }
 
 function showPage(id) {
@@ -857,24 +853,30 @@ function setDate() {
 }
 
 async function loadPrices() {
-  const key = TWELVE_KEY || localStorage.getItem('twelve_api_key') || '';
-  if(!key){
-    ['dxy-price','xau-price','eur-price','gbp-price'].forEach(id=>{ document.getElementById(id).textContent='Set Key'; });
-    document.getElementById('dxy-analysis').textContent = '⚙ Add TwelveData API key for live prices.';
-    return;
-  }
   try {
-    const symbols = 'EUR/USD,GBP/USD,XAU/USD';
-    const res = await fetch(`https://api.twelvedata.com/price?symbol=${symbols}&apikey=${key}`);
-    const data = await res.json();
-    const eur = parseFloat(data['EUR/USD']?.price);
-    const gbp = parseFloat(data['GBP/USD']?.price);
-    const xau = parseFloat(data['XAU/USD']?.price);
-    if(eur){ document.getElementById('eur-price').textContent = eur.toFixed(5); }
-    if(gbp){ document.getElementById('gbp-price').textContent = gbp.toFixed(5); }
-    if(xau){ document.getElementById('xau-price').textContent = xau.toFixed(2); }
-    if(eur){
-      const dxyApprox = (1/eur * 50 + 50).toFixed(2);
+    // EUR/USD and GBP/USD from Frankfurter (reliable, CORS-free)
+    const [eurRes, gbpRes] = await Promise.all([
+      fetch('https://api.frankfurter.app/latest?from=EUR&to=USD').then(r=>r.json()).catch(()=>null),
+      fetch('https://api.frankfurter.app/latest?from=GBP&to=USD').then(r=>r.json()).catch(()=>null)
+    ]);
+    const eurRate = eurRes?.rates?.USD;
+    const gbpRate = gbpRes?.rates?.USD;
+    if(eurRate){ document.getElementById('eur-price').textContent = eurRate.toFixed(5); }
+    if(gbpRate){ document.getElementById('gbp-price').textContent = gbpRate.toFixed(5); }
+
+    // Gold price from open metals API
+    const goldRes = await fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).catch(()=>null);
+    const goldPrice = goldRes?.[0]?.price || goldRes?.price || null;
+    if(goldPrice){
+      document.getElementById('xau-price').textContent = parseFloat(goldPrice).toFixed(2);
+    } else {
+      // Fallback: use open exchange rates approximate
+      document.getElementById('xau-price').textContent = 'See TV';
+    }
+
+    // DXY approximation from EUR (EUR is 57.6% of DXY basket)
+    if(eurRate){
+      const dxyApprox = (1/eurRate * 57.6 + 42.4).toFixed(2);
       document.getElementById('dxy-price').textContent = dxyApprox;
       const dxyUp = parseFloat(dxyApprox) > 100;
       document.getElementById('dxy-bias').textContent = dxyUp ? 'BULLISH' : 'BEARISH';
@@ -889,13 +891,13 @@ async function loadPrices() {
     }
   } catch(e) {
     ['dxy-price','xau-price','eur-price','gbp-price'].forEach(id=>{ document.getElementById(id).textContent='—'; });
-    document.getElementById('dxy-analysis').textContent = 'Price load failed. Check TwelveData key.';
+    document.getElementById('dxy-analysis').textContent = 'Auto price unavailable. Enter manually or check TradingView.';
   }
 }
 
 async function loadDailyBrief() {
   const el = document.getElementById('daily-brief');
-  if(!GEMINI_KEY){ el.innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Gemini API key to enable AI brief →</span>'; return; }
+  if(!GROQ_KEY){ el.innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Groq API key to enable AI brief →</span>'; return; }
   try {
     const now = new Date();
     const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][now.getDay()];
@@ -907,7 +909,7 @@ Give a brief 4-5 line daily brief covering: what session to watch, general USD s
     const text = await callGemini(prompt, 300);
     el.innerHTML = text.replace(/\n/g,'<br>');
   } catch(e) {
-    el.innerHTML = '<span style="color:var(--red)">Error: ' + e.message + '</span><br><span style="color:var(--text3);font-size:12px">Set Gemini key via ⚙ API Key button.</span>';
+    el.innerHTML = '<span style="color:var(--red)">Error: ' + e.message + '</span><br><span style="color:var(--text3);font-size:12px">Set Groq key via ⚙ API Key button.</span>';
   }
 }
 
@@ -921,7 +923,7 @@ async function analyzeWithClaude() {
   const notes = document.getElementById('t-notes').value;
   const session = document.getElementById('t-session').value;
   if(!entry || !sl || !tp) { document.getElementById('ai-result').innerHTML = '<span style="color:var(--red)">Fill in Entry, SL and TP first.</span>'; return; }
-  if(!GEMINI_KEY){ document.getElementById('ai-result').innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Gemini API key first →</span>'; return; }
+  if(!GROQ_KEY){ document.getElementById('ai-result').innerHTML = '<span style="color:var(--gold);cursor:pointer" onclick="openSettings()">⚙ Set Groq API key first →</span>'; return; }
   const rr = Math.abs(parseFloat(tp)-parseFloat(entry)) / Math.abs(parseFloat(sl)-parseFloat(entry));
   document.getElementById('ai-result').innerHTML = '<div class="ai-loading"><div class="spinner"></div> Analyzing setup...</div>';
   try {
